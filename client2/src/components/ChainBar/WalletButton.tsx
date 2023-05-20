@@ -1,11 +1,10 @@
 import { useState} from 'react'
 import {ethers} from 'ethers';
 // import { getWallet, getAllTransactions } from '../../utils/Connent';
-import { getWallet, getAllTransactions } from '../../utils/Connect'
+import { getWallet, getAllTransactions, getNFTS } from '../../utils/Connect'
 
 
 import './WalletButton.scss'
-
 
 function WalletButton(){
   const [address, setAddress] = useState("")
@@ -16,8 +15,11 @@ function WalletButton(){
       <button onClick={async () => {
         const address = await getWallet();
         setAddress(address);
-        const count = await getAllTransactions(address, chains);
-        console.log(count);
+        const data = await getAllTransactions(address, chains);
+        console.log("Transactions", data?.tx_count);
+        console.log("Balances", data?.balances);
+        const nfts = await getNFTS(address, '1');
+        console.log('Total NFTS:', nfts.total);
       }}>Connect</button>
     </div>
   )

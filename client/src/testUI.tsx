@@ -1,6 +1,6 @@
 import React from 'react'
 
-import UserRow from './components/userrow/UserRow'
+import UserRow from '../../client2/components/userrow/UserRow'
 
 const TestUI = () => {
   return (

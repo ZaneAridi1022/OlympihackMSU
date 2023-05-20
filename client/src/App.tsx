@@ -2,9 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import { Routes, Route } from "react-router-dom";
 import './App.css';
-import GithubLoginScreen from "./screens/GithubLoginScreen";
-import ProfilePage from "./screens/Profile";
-import Landing from "./screens/Landing";
+import GithubLoginScreen from "../../client2/src/screens/GithubLoginScreen";
+import ProfilePage from "../../client2/src/screens/Profile";
+import Landing from "../../client2/src/screens/Landing";
 
 function App() {
   // forward the user to the github login screen (we pass in the client ID)

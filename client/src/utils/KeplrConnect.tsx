@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import {connectJackalandUpload, connectWallet, checkFolder} from '../components/KYCinput/input';
+import { useState } from 'react';
+import {connectJackalandUpload} from '../../components/KYCinput/input';
 
 function uploadFileToJackal() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [file, setFile] = useState(null); // Initialize file state with null
 
   const handleFileChange = (e: any) => {
@@ -10,13 +9,9 @@ function uploadFileToJackal() {
     setFile(selectedFile); // Update the file state
   };
 
-  const handleUpload = async () => {
+  const handleUpload = () => {
     if (file) {
-      const wallet = await connectWallet();
-      await connectJackalandUpload(wallet,file); // Pass the file to your function for upload
-      const folder = await checkFolder(wallet, "s/kyc");
-      console.log("Folder", folder);
-
+      connectJackalandUpload(file); // Pass the file to your function for upload
     } else {
       console.error('No file selected.');
     }
@@ -24,7 +19,7 @@ function uploadFileToJackal() {
 
   return (
     <div>
-      <h1>Upload Identification</h1>
+      <h1>Upload File</h1>
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button>
     </div>
