@@ -48,6 +48,35 @@ app.get('/getUserData', async function(request, response){
     })
 })
 
+app.get('/commits/:username', async (req, res) => {
+    const username = req.params.username;
+  
+    try {
+      // Fetch user repositories
+      const repoResponse = await axios.get(`https://api.github.com/users/${username}/repos`);
+      const repos = repoResponse.data;
+  
+      // Fetch commits for each repository
+      const commitPromises = repos.map(async (repo) => {
+        const commitsResponse = await axios.get(`https://api.github.com/repos/${username}/${repo.name}/commits`);
+        return commitsResponse.data;
+      });
+  
+      // Wait for all commit requests to finish
+      const commits = await Promise.all(commitPromises);
+  
+      // Flatten the array of commits
+      const flattenedCommits = commits.flat();
+  
+      res.json(flattenedCommits);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error retrieving commits');
+    }
+  });
+  
+
+
 app.listen(4000, function () {
     console.log("CORS server running on port 4000");
 })

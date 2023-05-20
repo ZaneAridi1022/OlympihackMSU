@@ -8,7 +8,7 @@ function loginWithGithub() {
 
 function GithubLoginScreen() {
     const [rerender, setRerender] = useState(false);
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState({name: null, avatar_url: ''});
 
     useEffect(() => {
         const queryString = window.location.search;
@@ -32,8 +32,13 @@ function GithubLoginScreen() {
             getAccessToken();
         }
 
+        if (localStorage.getItem("accessToken") ){
+            getUserData();
+        }
+
     }, []);
 
+    // useEffect(() => {
     async function getUserData() {
         await fetch("http://localhost:4000/getUserData", {
             method: "GET",
@@ -47,8 +52,7 @@ function GithubLoginScreen() {
             setUserData(data);
         })
     }
-
-    
+    // }, [userData]);
 
     return (
         <>
@@ -66,7 +70,9 @@ function GithubLoginScreen() {
                     <button onClick={getUserData}>Get Data</button>
                     {Object.keys(userData).length !== 0 ?
                         <>
-                            <h4>Hey there </h4>
+                            {/* get the name and avatar url and add show it on the screen */}
+                            <h3>{userData["name"]}</h3>
+                            <img src={userData["avatar_url"]} alt="avatar" />
                         </>
                     :
                         <></>
