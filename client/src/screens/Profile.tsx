@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import ChainBar from '../components/ChainBar/ChainBar';
 
 
 function testingForRiley() {
@@ -8,9 +9,7 @@ function testingForRiley() {
 function ProfilePage() {
     return (
         <>
-            <button onClick={testingForRiley}>
-                Testing for Riley
-            </button>
+            <ChainBar />
         </>
     )
 }

@@ -12,7 +12,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <BrowserRouter>
-      <Taskbar />
       <App />
       {/* <TestUI /> */}
     </BrowserRouter>
