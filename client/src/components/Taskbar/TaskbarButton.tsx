@@ -5,11 +5,13 @@ import './TaskbarButton.scss'
 interface TaskbarButtonProps {
     label: string,
     link: string,
+    onClick: 
 }
 
 const TaskbarButton:React.FC<TaskbarButtonProps> = ({
     label,
     link,
+    onClick,
 }) => {
   return (
     <>
