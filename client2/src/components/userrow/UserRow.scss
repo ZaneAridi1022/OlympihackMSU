@@ -1,0 +1,32 @@
+.UserRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  
+    &__id,
+    &__name,
+    &__github {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+  
+    &__id {
+      flex: 1;
+      margin-right: 10px;
+    }
+  
+    &__name {
+      flex: 2;
+      margin-right: 10px;
+    }
+  
+    &__github {
+      flex: 3;
+    }
+  }
+  
