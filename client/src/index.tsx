@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
+import Taskbar from './components/Taskbar/Taskbar';
+import TestUI from './testUI';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -10,8 +12,14 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <BrowserRouter>
+      <Taskbar />
       <App />
+      {/* <TestUI /> */}
     </BrowserRouter>
+
+
+
+
 );
 
 // If you want to start measuring performance in your app, pass a function
