@@ -15,7 +15,6 @@ function App() {
   // Use the code to get the access token
   return (
     <>
-      <Taskbar/>
       <Routes>
         <Route path="/" element={<Landing/>}/>
         <Route path="/login" element={<GithubLoginScreen/>}/>

@@ -6,9 +6,9 @@ import GithubLoginScreen from "./GithubLoginScreen";
 function Landing() {
   return (
     <>
+    <Taskbar/>
+    {/* <GithubLoginScreen /> */}
     
-    <Taskbar />
-    <GithubLoginScreen />
     </>
   );
 }
