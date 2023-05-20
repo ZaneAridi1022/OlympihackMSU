@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 
-const CLIENT_ID = "f3acba1476f44f131be4";
+import { getCommitsHelper, loginWithGithub, getUserData, isUserLoggedIn } from "../api/GithubAPI";
+import { wait } from '@testing-library/user-event/dist/utils';
 
-function loginWithGithub() {
-    window.location.assign("https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID);
-}
+// const CLIENT_ID = "f3acba1476f44f131be4";
+
+// function loginWithGithub() {
+//     window.location.assign("https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID);
+// }
 
 function GithubLoginScreen() {
     const [rerender, setRerender] = useState(false);
@@ -39,10 +42,17 @@ function GithubLoginScreen() {
             getAccessToken();
         }
 
-        if (localStorage.getItem("accessToken") ){
-            getUserData();
-        }
 
+
+    }, []);
+
+    useEffect(() => {
+
+        if (isUserLoggedIn()){
+            wait(1000);
+            handleUserData();
+        }
+        
     }, []);
 
     // useEffect(() => {
@@ -50,35 +60,43 @@ function GithubLoginScreen() {
     // },[commitNum1,commitNum2,commitNum3])
 
     // useEffect(() => {
-    async function getUserData() {
-        await fetch("http://localhost:4000/getUserData", {
-            method: "GET",
-            headers: {
-                "Authorization" : "Bearer " + localStorage.getItem("accessToken")
-            }
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            console.log(data);
-            setUserData(data);
-        })
+    // async function getUserData() {
+    //     await fetch("http://localhost:4000/getUserData", {
+    //         method: "GET",
+    //         headers: {
+    //             "Authorization" : "Bearer " + localStorage.getItem("accessToken")
+    //         }
+    //     }).then((response) => {
+    //         return response.json();
+    //     }).then((data) => {
+    //         console.log(data);
+    //         setUserData(data);
+    //     })
+    // }
+
+
+    async function handleUserData() {
+        const data = await getUserData();
+        console.log(data);
+        setUserData(data);
     }
+
     // }, [userData]);
 
-    async function getCommitsHelper({user,owner,repoName}: {user: string, owner: string, repoName: string}): Promise<number> {
-        return await fetch("http://localhost:4000/getCommits?user=" + user + "&owner=" + owner + "&repoName=" + repoName, {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("accessToken")
-            }
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            console.log("commitHelper:",data);
-            console.log(data.length);
-            return data.length;
-        });
-    }
+    // async function getCommitsHelper({user,owner,repoName}: {user: string, owner: string, repoName: string}): Promise<number> {
+    //     return await fetch("http://localhost:4000/getCommits?user=" + user + "&owner=" + owner + "&repoName=" + repoName, {
+    //         method: "GET",
+    //         headers: {
+    //             "Authorization": "Bearer " + localStorage.getItem("accessToken")
+    //         }
+    //     }).then((response) => {
+    //         return response.json();
+    //     }).then((data) => {
+    //         console.log("commitHelper:",data);
+    //         console.log(data.length);
+    //         return data.length;
+    //     });
+    // }
 
 
 
@@ -170,7 +188,7 @@ function GithubLoginScreen() {
                     </button>
 
                     <h3>Get User Data from Github API</h3>
-                    <button onClick={getUserData}>Get Data</button>
+                    <button onClick={handleUserData}>Get Data</button>
                     {Object.keys(userData).length !== 2 ?
                         <>
                             {/* get the name and avatar url and add show it on the screen */}
