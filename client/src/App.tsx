@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import { Routes, Route } from "react-router-dom";
 import './App.css';
 import GithubLoginScreen from "./screens/GithubLoginScreen";
+import ProfilePage from "./screens/Profile";
 
 function App() {
   // forward the user to the github login screen (we pass in the client ID)
@@ -13,6 +14,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<GithubLoginScreen/>}/>
+        <Route path="/profilepage" element={<ProfilePage/>}/>
       </Routes>
     </>
   );

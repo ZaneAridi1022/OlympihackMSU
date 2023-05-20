@@ -46,11 +46,14 @@ function GithubLoginScreen() {
             console.log(data);
             setUserData(data);
         })
-}
+    }
+
+    
 
     return (
         <>
             <h1>Github Login</h1>
+            
             {localStorage.getItem("accessToken") ?
                 <>
                     <h1>We have the access token</h1>
