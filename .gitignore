@@ -2,3 +2,4 @@
 client/src/ConnectVARS.tsx
 
 client2/node_modules
+client2/.vite
