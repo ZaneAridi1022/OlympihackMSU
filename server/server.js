@@ -34,11 +34,28 @@ app.get('/getAccessToken', async function(request, response){
 // getUserData
 // access token is going to be passed in as an Authoirization header
 app.get('/getUserData', async function(request, response){
-    request.get("Authorization");
+    console.log(request.get("Authorization"));
     await fetch("https://api.github.com/user", {
         method: "GET",
         headers: {
             "Authorization" : request.get("Authorization")
+        }
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        console.log(data);
+        response.json(data);
+    })
+})
+
+// Get commits from every repo
+app.get('/getCommits', async function(request, response){
+    console.log(request.get("Authorization"));
+    await fetch("https://api.github.com/users/" + request.query.user + "/repos?per_page=100&type=all", {
+        method: "GET",
+        headers: {
+            "Authorization" : request.get("Authorization"),
+            "Accept": "application/json"
         }
     }).then((res) => {
         return res.json();
