@@ -15,6 +15,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Landing/>}/>
+        <Route path="/login" element={<GithubLoginScreen/>}/>
         <Route path="/profile" element={<ProfilePage/>}/>
       </Routes>
     </>
