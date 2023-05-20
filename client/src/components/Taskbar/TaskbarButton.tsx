@@ -1,27 +1,30 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom'
+
 import './TaskbarButton.scss'
 
 interface TaskbarButtonProps {
     label: string,
     link: string,
-    onClick: 
+    
+    onClickFunction?: () => void,
 }
 
 const TaskbarButton:React.FC<TaskbarButtonProps> = ({
     label,
     link,
-    onClick,
+    onClickFunction,
 }) => {
   return (
     <>
     <div className='TaskBarButton'>
-    <a href={link}>
+    <Link to={link} onClick={onClickFunction}>
 
         <span></span>
         <span></span>
         <span></span>
-    {label}</a>
+    {label}</Link>
     </div>
     </>
   )
