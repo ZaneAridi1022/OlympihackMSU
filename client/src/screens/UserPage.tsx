@@ -1,5 +1,10 @@
 import React from 'react'
 
+import { getCommitsHelper, loginWithGithub, getUserData, isUserLoggedIn } from "../api/GithubAPI";
+
+import { getUserDataGithub } from "../api/GithubAPI";
+import { useState } from 'react';
+
 import { useParams } from 'react-router-dom';
 
 import './UserPage.scss'
@@ -13,6 +18,8 @@ const UserPage = () => {
     //     const data = await response.json();
     //     return data;
     // }
+
+
 
 
     const userInfomation = {
@@ -98,8 +105,22 @@ const UserPage = () => {
         
         }
 
+    
+    // async function handleUserData() {
+    //         const data = await getUserData();
+    //         console.log(data);
+    //         setUserData(data);
+    // }
+
+    
 
     const { userId } = useParams();
+
+    if (getUserDataGithub() && userId === getUserDataGithub().login){
+        return (<>
+            <h1>This is my page! </h1>
+        </>)
+    }
     
     return (
         <>

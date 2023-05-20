@@ -5,7 +5,7 @@ import './App.css';
 import GithubLoginScreen from "./screens/GithubLoginScreen";
 import ProfilePage from "./screens/Profile";
 import Landing from "./screens/Landing";
-import UserPage from "./screens/ProfilePage";
+import UserPage from "./screens/UserPage";
 import Taskbar from './components/Taskbar/Taskbar';
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
         <Route path="/login" element={<GithubLoginScreen/>}/>
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/" element={<GithubLoginScreen/>}/>
-        <Route path="/profilepage" element={<ProfilePage/>}/>
+        {/* <Route path="/profilepage" element={<ProfilePage/>}/> */}
         <Route path="/user/:userId" element={<UserPage />}/>
       </Routes>
     </>
