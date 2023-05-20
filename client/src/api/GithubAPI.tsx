@@ -26,12 +26,38 @@ export async function getUserData() {
       }
     });
     const data = await response.json();
+    
+    setUserDataGithub(data);
     return data;
 }
 
 export function isUserLoggedIn() {
     return localStorage.getItem('accessToken') !== null;
 }
+
+// export function getGithubUserName() {
+//     if (!isUserLoggedIn()) {
+//         return null;
+//     }
+//     return localStorage.getItem('githubUserName');
+// }
+
+export function setUserDataGithub(data: any) {
+    // if (!isUserLoggedIn()) {
+    //     return null;
+    // }
+
+    return localStorage.setItem('userData', JSON.stringify(data));
+}
+
+export function getUserDataGithub() {
+    if (!isUserLoggedIn()) {
+        return null;
+    }
+
+    return JSON.parse(localStorage.getItem('userData')!);
+}
+
   
 
 export function loginWithGithub() {
