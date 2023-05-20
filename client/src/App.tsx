@@ -6,6 +6,7 @@ import GithubLoginScreen from "./screens/GithubLoginScreen";
 import ProfilePage from "./screens/Profile";
 import Landing from "./screens/Landing";
 import UserPage from "./screens/ProfilePage";
+import Taskbar from './components/Taskbar/Taskbar';
 
 function App() {
   // forward the user to the github login screen (we pass in the client ID)
@@ -14,13 +15,14 @@ function App() {
   // Use the code to get the access token
   return (
     <>
+      <Taskbar/>
       <Routes>
         <Route path="/" element={<Landing/>}/>
         <Route path="/login" element={<GithubLoginScreen/>}/>
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/" element={<GithubLoginScreen/>}/>
         <Route path="/profilepage" element={<ProfilePage/>}/>
-        <Route path=":userId" element={<UserPage />}/>
+        <Route path="/user/:userId" element={<UserPage />}/>
       </Routes>
     </>
   );
