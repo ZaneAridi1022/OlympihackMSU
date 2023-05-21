@@ -13,13 +13,22 @@ function testingForRiley() {
 
 function PersonalPage() {
 
+    if (getUserDataGithub() === null) {
+        return (
+            <>
+                <h1>Not logged in</h1>
+            </>
+        )
+    }
+    
+
     const [mintAddress, setMintAddress] = useState('');
-    const [githubUser, setGithubUser] = useState('');
+    const [githubUser, setGithubUser] = useState(getUserDataGithub().login);
 
-    function handleChangeGithubUser(e: React.ChangeEvent<any>) {
-        setGithubUser(e.target.value);
-      }
-
+    // function handleChangeGithubUser(e: React.ChangeEvent<any>) {
+    //     setGithubUser(e.target.value);
+    //   }
+     
       function handleChangeMintAddress(e: React.ChangeEvent<any>) {
         setMintAddress(e.target.value);
       }
@@ -56,8 +65,8 @@ function PersonalPage() {
 
     return (
         <>
-                    <p>Enter Github Username</p>
-                    <input type="text" value={githubUser} onChange={handleChangeGithubUser} />
+                    <p>Your Github Username</p>
+                    <input disabled type="text" value={githubUser} />
                     <p>This should be changed to msg.sender later</p>
                     <p>Enter the address to mint to</p>
                     <input  type="text" value={mintAddress} onChange={handleChangeMintAddress}/>
