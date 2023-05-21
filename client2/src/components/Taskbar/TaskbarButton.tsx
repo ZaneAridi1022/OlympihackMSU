@@ -24,6 +24,7 @@ const TaskbarButton:React.FC<TaskbarButtonProps> = ({
         <span></span>
         <span></span>
         <span></span>
+        
     {label}</Link>
     </div>
     </>

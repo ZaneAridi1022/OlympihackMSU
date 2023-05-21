@@ -27,7 +27,7 @@ const Taskbar:React.FC<TaskbarProps> = ({
         <button className="circleAvatar" onClick={() => navigate("/profile")}>
         <img className="profileImage" src={getUserDataGithub().avatar_url}></img>
         </button>
-        : <TaskbarButton label={label} link={'/login'} />}
+        : <TaskbarButton label='Login' link={'/login'} />}
       </div>
     </div>
   )
