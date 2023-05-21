@@ -34,7 +34,7 @@ function PersonalPage() {
         const walletAddress = accounts[0]    // first account in MetaMask
         const signer = await provider.getSigner(walletAddress)
 
-        const sbAddress = "0x45a47CE4a5423b0083272914bbF12c5E63C509a6"
+        const sbAddress = "0x3630486E6F1EB907E86c38178207e50011560De8"
 
         // The ERC-20 Contract ABI, which is a common contract interface
         // for tokens (this is the Human-Readable ABI format)

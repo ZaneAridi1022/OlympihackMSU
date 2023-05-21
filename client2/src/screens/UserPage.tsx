@@ -3,7 +3,8 @@ import React from 'react'
 import { getCommitsHelper, loginWithGithub, getUserData, isUserLoggedIn } from "../api/GithubAPI";
 
 import { getUserDataGithub } from "../api/GithubAPI";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {ethers} from 'ethers';
 
 import { useParams } from 'react-router-dom';
 
@@ -106,22 +107,54 @@ const UserPage = () => {
         
         }
 
+        const { userId } = useParams() as { userId: string };
+
+        
     
-    // async function handleUserData() {
-    //         const data = await getUserData();
-    //         console.log(data);
-    //         setUserData(data);
+        const [walletAddress, setWalletAddress] = useState('Loading');
+        //const walletAddress = 
+    
+        async function GetAddressFromGithub(_githubUsername :string){
+            try {
+            //const ethereum = (window as any).ethereum;
+            // A Web3Provider wraps a standard Web3 provider, which is
+            // what MetaMask injects as window.ethereum into each page
+            const provider = new ethers.BrowserProvider(window.ethereum)
+    
+            // MetaMask requires requesting permission to connect users accounts
+            await provider.send("eth_requestAccounts", []);
+    
+            const sbAddress = "0x3630486E6F1EB907E86c38178207e50011560De8"
+    
+            // The ERC-20 Contract ABI, which is a common contract interface
+            // for tokens (this is the Human-Readable ABI format)
+            const sbtAbi = [
+                "function getAddressByGithub(string memory _githubUsername) public view returns(address)",
+                "function safeMint(address to, string memory githubUsername) public"
+            ];
+    
+            const sbContract = new ethers.Contract(sbAddress, sbtAbi, provider);
+    
+            const address = await sbContract.getAddressByGithub(_githubUsername);
+            setWalletAddress(address)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    
+        useEffect(()=>{
+            GetAddressFromGithub(userId);
+        }, [])
+
+    
+
+   
+
+    // if (getUserDataGithub() && userId === getUserDataGithub().login){
+    //     return (<>
+    //         <h1>This is my page! </h1>
+    //     </>)
     // }
-
-    
-
-    const { userId } = useParams();
-
-    if (getUserDataGithub() && userId === getUserDataGithub().login){
-        return (<>
-            <h1>This is my page! </h1>
-        </>)
-    }
     
     return (
         <>
@@ -144,6 +177,9 @@ const UserPage = () => {
                             })
                         }
                     </div>
+                    <h3>Wallet Address</h3>
+                    <p>{walletAddress}</p>
+
                     <h3>Score</h3>
                     <p>{userInfomation["UserScore"]}</p>
                     <h3>Bio</h3>
