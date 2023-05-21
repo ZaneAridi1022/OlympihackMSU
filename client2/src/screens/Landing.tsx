@@ -1,8 +1,14 @@
 import React from "react";
 import Taskbar from "../components/Taskbar/Taskbar";
 import NFTImage from "../assets/SoulBoundNFTImage.svg"
+import GithubLoginScreen from "./GithubLoginScreen";
+
+
 
 function Landing() {
+
+
+
   return (
     <div className="flex flex-col bg-black min-h-screen text-white border-white">
       <Taskbar />
@@ -17,6 +23,9 @@ function Landing() {
           <img className=" object-contain h-96 w-96 border-4" src={NFTImage} alt="NFT Landing Page"/>
         </div>
 
+      </div>
+      <div className="invisible">
+        {/* <GithubLoginScreen /> */}
       </div>
     </div>
   );

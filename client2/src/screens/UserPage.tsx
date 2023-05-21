@@ -15,116 +15,40 @@ import Taskbar from '../components/Taskbar/Taskbar';
 const UserPage = () => {
 
 
-    // make a function for get userbio
-    // const getUserBio = async (userId: string) => {
-    //     const response = await fetch(`http://localhost:3001/api/users/${userId}`);
-    //     const data = await response.json();
-    //     return data;
-    // }
-
-
-
-
-    // const userInfomation = {
-    //     "username": "amantham20",
-    //     "actual_name": "Aman Dhruva Thamminana",
-    //     "nftpicture": "https://avatars.githubusercontent.com/u/48414198?v=4",
-    //     "hashtags": ["crypto", "blockchain", "NFTs"],
-    //     "bio": "Passionate about cryptocurrencies and blockchain technology.",
-    //     "UserScore": 1200,
-
-    //     "blockchain-contributions": [
-    //         {
-    //             "name": "TrustLink1",
-    //             "description": "A social media platform for blockchain enthusiasts. Here is one 1",
-    //             "link": ""
-    //         },
-    //         {
-    //             "name": "TrustLink2",
-    //             "description": "A social media platform for blockchain enthusiasts. Here is one 2",
-    //             "link": ""
-    //         },
-    //         {
-    //             "name": "TrustLink3",
-    //             "description": "A social media platform for blockchain enthusiasts. Here is one 3",
-    //             "link": ""
-    //         },
-    //         {
-    //             "name": "TrustLink4",
-    //             "description": "A social media platform for blockchain enthusiasts. Here is one 4",
-    //             "link": ""
-
-    //         }
-    //     ],
-
-    //     "Github Contributions": [
-    //         {
-    //             "RepoName": "projectA",
-    //             "commit": [
-    //                 {
-    //                     "time": "1684605186",
-    //                     "message": "Initial commit"
-    //                 },
-    //                 {
-    //                     "time": "1684631222",
-    //                     "message": "Update README"
-    //                 }
-    //             ],
-    //             "stars": 10
-    //         },
-    //         {
-    //             "RepoName": "projectB",
-    //             "commit": [
-    //                 {
-    //                     "time": "1684605186",
-    //                     "message": "Initial commit"
-    //                 },
-    //                 {
-    //                     "time": "1684631222",
-    //                     "message": "Fix bug #123"
-    //                 }
-    //             ],
-    //             "stars": 25
-    //         },
-    //         {
-    //             "RepoName": "projectC",
-    //             "commit": [
-    //                 {
-    //                     "time": "1684605186",
-    //                     "message": "Initial commit"
-    //                 },
-    //                 {
-    //                     "time": "1684631222",
-    //                     "message": "Add feature X"
-    //                 },
-    //                 {
-    //                     "time": "1684652000",
-    //                     "message": "Update documentation"
-    //                 }
-    //             ],
-    //             "stars": 5
-    //         }
-    //     ]
-        
-    //     }
-
         const { userId } = useParams() as { userId: string };
+
         
         const [commitData, setCommitData] = useState([{repoName:'',
-                commits:0,
-                stars:0
-            }]);
+        commits:0,
+        stars:0
+    }]);
+    
+    const [userInfomation, setUserInfomation] = useState({
+        "login": "",
+        "name": "",
+        "avatar_url": "",
+        "hashtags": [],
+        "bio": "",
+        "UserScore": 0,
+        "Github Contributions": [],
+        "blockchain-contributions": []
+    });
 
-        const [userInfomation, setUserInfomation] = useState({
-            "username": "",
-            "actual_name": "",
-            "nftpicture": "",
-            "hashtags": [],
-            "bio": "",
-            "UserScore": 0,
-            "Github Contributions": [],
-            "blockchain-contributions": []
-        });
+    async function GetUserInfoWithId({user}: {user: string}) {
+        await fetch("http://localhost:4000/getUserInfoWithId?user="+user, {
+            method: "GET"
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+            setUserInfomation(data);
+        })
+    }
+
+    useEffect(() => {
+        GetUserInfoWithId({user: userId});
+    }, [userId]);
+
 
         async function getCommitHistory({user}: {user: string}) {
             await fetch("http://localhost:4000/getRepos?user="+user, {
@@ -216,22 +140,11 @@ const UserPage = () => {
             if (!data) {
                 return;
             }
-            
-            
-            
+
+            await GetUserInfoWithId({user: userId});
 
 
-            const userInfomation = {
-                "username": data.login,
-                "actual_name": data.name,
-                "nftpicture": data.avatar_url,
-                "hashtags": ["crypto", "blockchain", "NFTs"],
-                "bio": data.bio,
-                "UserScore": 1200,
-
-            }
-
-            setUserInfomation(userInfomation);
+  
         }
         useEffect(() => {
             handleUserData();
@@ -291,19 +204,20 @@ const UserPage = () => {
 
                 <div className='LeftPane'>
                     <h1>Profile</h1>
-                    <img src={userInfomation["nftpicture"]} className='LeftPane__ProfileImage' alt="user123" />
-                    <h2>{userInfomation["actual_name"]}</h2>
-                    <h2>{userInfomation["username"]}</h2>
+                    <img src={userInfomation["avatar_url"]} className='LeftPane__ProfileImage' alt="user123" />
+                    <h2>{userInfomation["name"]}</h2>
+                    <h2>{userInfomation["login"]}</h2>
 
                     <h3>Hashtags</h3>
                     <div className="hashtags">
                         {
-                            userInfomation["hashtags"].map((hashtag: any) => {
+                            ["BlockChain", "NFT", "CRYPTO"].map((hashtag: any) => {
                                 return (
                                     <p className='hashtags__tags'> # {hashtag}</p>
                                 )
                             })
                         }
+                        
                     </div>
                     <h3>Wallet Address</h3>
                     <p>{walletAddress}</p>
