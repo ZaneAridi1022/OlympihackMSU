@@ -3,6 +3,8 @@ import './Taskbar.scss'
 import TaskbarButton from './TaskbarButton'
 const Taskbar = () => {
   return (
+    <div className='superbar'>
+
     <div className="taskbar">
     <div className="taskbar__logo">
         <h3>TrustLink</h3>
@@ -15,6 +17,7 @@ const Taskbar = () => {
       <TaskbarButton label={'Login'} link={''} />
     </div>
   </div>
+    </div>
   )
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-inner-declarations */
 import { useEffect, useState } from 'react';
 
 const CLIENT_ID = "f3acba1476f44f131be4";
