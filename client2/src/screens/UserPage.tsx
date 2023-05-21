@@ -6,19 +6,27 @@ import { getCommitsHelper, loginWithGithub, getUserData, isUserLoggedIn } from "
 import { getUserDataGithub } from "../api/GithubAPI";
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { getWallet, getAllTransactions, getNFTS } from '../utils/Connect';
 
 import { useParams } from 'react-router-dom';
+import { getAllTransactions } from '../utils/Connect';
 
 import './UserPage.scss'
 import Taskbar from '../components/Taskbar/Taskbar';
-import styles from './UserPage.module.scss';
+import GithubDataDisplay from '../githubdata/GithubDataDisplay';
 
 const UserPage = () => {
 
+
     const { userId } = useParams() as { userId: string };
 
-    const [chainData, setChainData] = useState({} as any);
+    const [chainData, setChainData] = useState({});
+
+
+    const [commitData, setCommitData] = useState([{
+        repoName: '',
+        commits: 0,
+        stars: 0
+    }]);
 
     const [userInfomation, setUserInfomation] = useState({
         "login": "",
@@ -47,6 +55,88 @@ const UserPage = () => {
     }, [userId]);
 
 
+    async function getCommitHistory({ user }: { user: string }) {
+        await fetch("http://localhost:4000/getRepos?user=" + user, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("accessToken")
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+            //setCommitData(data);
+            var max1 = -1;
+            var max1name = '';
+            var max1owner = '';
+            var max2 = -1;
+            var max2name = '';
+            var max2owner = '';
+            var max3 = -1;
+            var max3name = '';
+            var max3owner = '';
+
+            data.map((repo: { stargazers_count: 0, name: '', owner: { login: '' } }) => {
+                if (repo["stargazers_count"] > max1) {
+                    max1 = repo["stargazers_count"];
+                    max1name = repo["name"];
+                    max1owner = repo["owner"]["login"];
+                }
+                else if (repo["stargazers_count"] > max2) {
+                    max2 = repo["stargazers_count"];
+                    max2name = repo["name"];
+                    max2owner = repo["owner"]["login"];
+                }
+                else if (repo["stargazers_count"] > max3) {
+                    max3 = repo["stargazers_count"];
+                    max3name = repo["name"];
+                    max3owner = repo["owner"]["login"];
+                }
+            })
+
+            Promise.all([
+                getCommitsHelper({ user: user, owner: max1owner, repoName: max1name }),
+                getCommitsHelper({ user: user, owner: max2owner, repoName: max2name }),
+                getCommitsHelper({ user: user, owner: max3owner, repoName: max3name })
+            ])
+                .then((commitNums) => {
+                    const [num1, num2, num3] = commitNums;
+                    // setCommitNum1(num1);
+                    // setCommitNum2(num2);
+                    // setCommitNum3(num3);
+                    setCommitData([
+                        {
+                            repoName: max1name,
+                            commits: num1,
+                            stars: max1
+                        },
+                        {
+                            repoName: max2name,
+                            commits: num2,
+                            stars: max2
+                        },
+                        {
+                            repoName: max3name,
+                            commits: num3,
+                            stars: max3
+                        }
+                    ]);
+
+                })
+        })
+
+    }
+
+    // useEffect(() => {
+
+    // },[commitData]);
+
+    useEffect(() => {
+        getCommitHistory({ user: userId });
+        console.log(commitData);
+    }, [userId]);
+
+
     async function handleUserData() {
         const data = await getUserDataGithub();
         if (!data) {
@@ -54,6 +144,8 @@ const UserPage = () => {
         }
 
         await GetUserInfoWithId({ user: userId });
+
+
 
     }
     useEffect(() => {
@@ -87,29 +179,45 @@ const UserPage = () => {
             const sbContract = new ethers.Contract(sbAddress, sbtAbi, provider);
 
             const address = await sbContract.getAddressByGithub(_githubUsername);
-            setWalletAddress(address);
-            const data = await getAllTransactions(address);
-            const nfts = await getNFTS(address, '1');
-            setChainData({"address":address,"tx":data?.tx_count, "balances":data?.balances, "nfts":nfts.total});
-
-            
+            setWalletAddress(address)
         } catch (error) {
             console.log(error);
         }
     }
 
-    useEffect(() => {
-        console.log(userId);
-        GetAddressFromGithub(userId);
-    }, [userId])
+    // useEffect(() => {
+    //     GetAddressFromGithub(userId).then((address) => {
 
 
+    //         console.log("address" + walletAddress);
+    //         // make wallet address lowercase
+    //         // setWalletAddress(walletAddress.toLowerCase());
+    //         // const transactions = getAllTransactions(walletAddress);
+    //         // transactions.tx_count
+    //         // transactions.balances
+    //         console.log("transactions");
+    //         // console.log(transactions);
+    //         // console.log(transactions);
+
+
+    //         // setChainData(transactions);
+
+    //     });
+
+        
+    // }, [walletAddress])
+
+
+    // if (getUserDataGithub() && userId === getUserDataGithub().login){
+    //     return (<>
+    //         <h1>This is my page! </h1>
+    //     </>)
+    // }
 
     return (
         <>
             <Taskbar />
-            {/* 'h-full w-full bg-gradient-to-b via-black from-gray-700 to-black text-white absolute top-0 left-0 z--1' */}
-            <div className={styles.container}>
+            <div className='h-screen w-full bg-gradient-to-b via-black from-gray-700 to-black text-white'>
 
                 <div className='conintainer'>
 
@@ -140,9 +248,19 @@ const UserPage = () => {
                     </div>
                     <div className="rightpange">
                         <h1>BlockChain Contribututions</h1>
-                            <p>Your total crypto balances: {chainData["balances"]}</p>
-                            <p>You have made {chainData["tx"]} transactions on the blockchain</p>
-                            <p>You have {chainData['nfts']} nfts</p>
+
+
+
+                        <h1 className='text-2xl font-bold'>BlockChain Stats</h1>
+                        {/* <p>Wallet Address: {chainData.address}</p>
+                        <p>Balance: {chainData.tx_count}</p>
+                        <p>NFTS: {chainData.nfts}</p> */}
+
+                        <GithubDataDisplay user={userId}/>
+
+
+
+
                     </div>
                 </div>
             </div>

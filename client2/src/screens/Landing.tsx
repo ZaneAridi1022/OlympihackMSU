@@ -84,7 +84,7 @@ async function handleUserData() {
     
     <div className={styles.container}>
       <Taskbar />
-      <div className="flex flex-row flex-grow justify-around content-center mb-5">
+      <div className="pt-20 flex flex-row flex-grow justify-around content-center mb-5">
 
         <div className="flex flex-col justify-center content-center">
           <h1 className={styles.title}>TrustLink</h1>

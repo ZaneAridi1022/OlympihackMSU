@@ -1,11 +1,10 @@
-
-.conintainer{
-    // padding-top: 60px;
+.conintainer {
+    padding-top: 60px;
     width: 80%;
-    overflow:hidden;
-    // margin: auto;
+    margin: auto;
     display: flex;
-    .LeftPane{
+
+    .LeftPane {
         background: #374151;
         width: 400px;
         padding: 20px;
@@ -13,7 +12,8 @@
         margin-right: 10px;
         border-radius: 15px;
         height: fit-content;
-        &__ProfileImage{
+
+        &__ProfileImage {
             width: 200px;
             height: 200px;
             border-radius: 50%;
@@ -22,7 +22,8 @@
             margin: auto;
         }
     }
-    .rightpange{
+
+    .rightpange {
         margin-left: 10px;
         margin-top: 30px;
         background: #374151;
@@ -33,13 +34,14 @@
     }
 }
 
-.hashtags{
+.hashtags {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    &__tags{
+
+    &__tags {
         background: rgb(127, 125, 125);
         padding: 5px;
         border-radius: 5px;
