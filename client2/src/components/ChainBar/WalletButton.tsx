@@ -17,7 +17,7 @@ function WalletButton(){
         // console.log("Transactions", data?.tx_count);
         // console.log("Balances", data?.balances);
         const nfts = await getNFTS(address, '1');
-        const chaindata = {"address":address,"tx":data?.tx_count, "balances":data?.balances, "nfts":nfts.total}
+        const chaindata = {"address":address,"tx":data?.tx_count, "balances":data?.balances, "nfts":nfts.total};
         console.log("In wallet Button", chaindata);
         setChainData(chaindata);
       }}>Connect</button>

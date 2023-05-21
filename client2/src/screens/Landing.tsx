@@ -3,12 +3,14 @@ import React from "react";
 import Taskbar from "../components/Taskbar/Taskbar";
 import NFTImage from "../assets/SoulBoundNFTImage.svg"
 import GithubLoginScreen from "./GithubLoginScreen";
-
+import { ethers } from "ethers";
 import { useState, useEffect } from "react";
-
 import { getUserData, isUserLoggedIn, setUserDataGithub } from "../api/GithubAPI";
+import NFTDisplay from "../utils/utils";
 
 function Landing() {
+
+
 
   const [rerender, setRerender] = useState(false);
   const [userData, setUserData] = useState({login: '', avatar_url: ''});
@@ -16,6 +18,7 @@ function Landing() {
                                                   commits:0,
                                                   stars:0
                                               }]);
+  const [contract, setContract] = useState(null);
 
 
   useEffect(() => {
@@ -39,7 +42,17 @@ function Landing() {
           }
           getAccessToken();
       }
+      const provider = new ethers.JsonRpcProvider("https://rpc2.sepolia.org");
 
+      const sbAddress = "0x3630486E6F1EB907E86c38178207e50011560De8"
+
+      // The ERC-20 Contract ABI, which is a common contract interface
+      // for tokens (this is the Human-Readable ABI format)
+      const sbtAbi = [
+        "function getTokenURI(uint256 _tokenId) public view returns(string memory)"
+      ];
+      const contractInstance = new ethers.Contract(sbAddress, sbtAbi, provider);
+      setContract(contractInstance);
 
 
   }, []);
@@ -75,7 +88,7 @@ async function handleUserData() {
         </div>
 
         <div className="flex flex-col justify-center content-center">
-          <img className=" object-contain h-96 w-96 border-4" src={NFTImage} alt="NFT Landing Page"/>
+        <img className="object-contain h-96 w-96 border-4" src={NFTImage} alt="NFT" />
         </div>
 
       </div>
