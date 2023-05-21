@@ -97,10 +97,12 @@ function GithubDataDisplay({user}: {user: string}) {
     const RepoDisplay = ({repoName,stars,commits}: {repoName: string, stars: number, commits: number}) => {
         return (
             <>
-                <h2>{repoName}</h2>
-                <p>This repo has {stars} stars</p>
-                <p>The user contributed through {commits} commits</p>
-                <br/>
+                <div className={styles.repos}>
+                    <h2 className={styles.repoHeader}>{repoName}</h2>
+                    <p className={styles.repoBody}>This repo has {stars} stars</p>
+                    <p className={styles.repoBody}>The user contributed through {commits} commits</p>
+                    <br/>
+                </div>
             </>
         )
     }
@@ -112,7 +114,7 @@ function GithubDataDisplay({user}: {user: string}) {
     return (
         <>
         <div className={styles.githubDisplayContainer}>
-            <p>This user's top 3 repositories are:</p>
+            <p className={styles.title}>Here are your github metrics:</p>
             {RepoDisplayList}
         </div>
         </>

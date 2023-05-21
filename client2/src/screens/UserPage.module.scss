@@ -1,0 +1,7 @@
+.container {
+    background: linear-gradient(180deg, #000000 0%, #FFFFFF 100%), linear-gradient(90deg, #000000 0%, #FFFFFF 100%), #000000;
+    background-blend-mode: multiply, screen, normal;
+
+    height: 100vh;
+    scroll-behavior: smooth;
+}

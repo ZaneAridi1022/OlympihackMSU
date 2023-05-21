@@ -10,9 +10,9 @@ import  Taskbar  from '../components/Taskbar/Taskbar';
 import WalletButton from '../components/ChainBar/WalletButton';
 
 import { getCommitsHelper, getUserDataGithub } from "../api/GithubAPI";
-//import GithubDataDisplay from '../githubdata/GithubDataDisplay';
-
 import GithubDataDisplay from '../components/githubdata/GithubDataDisplay';
+
+// import GithubDataDisplay from '../components/githubdata/GithubDataDisplay';
 import styles from "./Profile.module.scss";
 
 
@@ -297,6 +297,14 @@ function ProfilePage() {
                     <PersonalPage />
                 </div>
 
+            </div>
+
+            <div className="bg-gray">
+                <br></br>
+                <br></br>
+                <br></br>
+                
+                <GithubDataDisplay user={getUserDataGithub().login}/>
             </div>
 
         </div>

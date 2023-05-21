@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 
 import './UserPage.scss'
 import Taskbar from '../components/Taskbar/Taskbar';
+import styles from './UserPage.module.scss';
 
 const UserPage = () => {
 
@@ -107,7 +108,8 @@ const UserPage = () => {
     return (
         <>
             <Taskbar />
-            <div className='h-screen w-full bg-gradient-to-b via-black from-gray-700 to-black text-white'>
+            {/* 'h-full w-full bg-gradient-to-b via-black from-gray-700 to-black text-white absolute top-0 left-0 z--1' */}
+            <div className={styles.container}>
 
                 <div className='conintainer'>
 

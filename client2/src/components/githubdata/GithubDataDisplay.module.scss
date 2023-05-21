@@ -1,4 +1,27 @@
 .githubDisplayContainer {
     background: gray;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
+
+.title {
+    color:white;
+    font-size:4rem;
+}
+
+.repos {
+    color:white;
+}
+
+.repoHeader {
+    font-size: 2rem;
+    text-align:center;
+}
+
+.repoBody {
+    font-size: 1rem;
+    text-align: center;
+}
+
