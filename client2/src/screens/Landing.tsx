@@ -1,6 +1,7 @@
 /* eslint-disable no-inner-declarations */
 import React from "react";
 import Taskbar from "../components/Taskbar/Taskbar";
+
 import NFTImage from "../assets/SoulBoundNFTImage.svg"
 import GithubLoginScreen from "./GithubLoginScreen";
 
@@ -8,6 +9,7 @@ import { ethers } from "ethers";
 import { useState, useEffect } from "react";
 import { getUserData, isUserLoggedIn, setUserDataGithub } from "../api/GithubAPI";
 import NFTDisplay from "../utils/utils";
+
 
 function Landing() {
 
@@ -78,13 +80,14 @@ async function handleUserData() {
 
 
   return (
-    <div className="flex flex-col bg-black min-h-screen text-white border-white">
+    
+    <div className={styles.container}>
       <Taskbar />
       <div className="flex flex-row flex-grow justify-around content-center mb-5">
 
         <div className="flex flex-col justify-center content-center">
-          <h1 className="text-7xl">Trust Link</h1>
-          <p className="text-4xl mt-4">Don't Trust, Just Verfiy</p>
+          <h1 className={styles.title}>TrustLink</h1>
+          <p className={styles.slogan}>Don't Trust, Just Verfiy</p>
         </div>
 
         <div className="flex flex-col justify-center content-center">

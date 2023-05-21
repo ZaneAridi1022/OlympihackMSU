@@ -6,9 +6,14 @@ import KeplrConnect from '../utils/KeplrConnect';
 import {toast} from 'react-toastify';
 
 import { ethers } from 'ethers';
+import  Taskbar  from '../components/Taskbar/Taskbar';
+import WalletButton from '../components/ChainBar/WalletButton';
 
 import { getCommitsHelper, getUserDataGithub } from "../api/GithubAPI";
-import GithubDataDisplay from '../githubdata/GithubDataDisplay';
+//import GithubDataDisplay from '../githubdata/GithubDataDisplay';
+
+import GithubDataDisplay from '../components/githubdata/GithubDataDisplay';
+import styles from "./Profile.module.scss";
 
 
 import { AuthContext } from '../utils/AuthContext';
@@ -30,6 +35,7 @@ const MyProfileThingy = () => {
     // const credibilityScore = calculateCredibilityScore();
     // const [credibilityScoreThingy, setCredibilityScoreThingy] = useState(-1);
 
+
     const [userInfomation, setUserInfomation] = useState({
         "username": "",
         "actual_name": "",
@@ -40,85 +46,6 @@ const MyProfileThingy = () => {
         "Github Contributions": [],
         "blockchain-contributions": []
     });
-
-    async function getCommitHistory({ user }: { user: string }) {
-        await fetch("http://localhost:4000/getRepos?user=" + user, {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("accessToken")
-            }
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            console.log(data);
-            //setCommitData(data);
-            var max1 = -1;
-            var max1name = '';
-            var max1owner = '';
-            var max2 = -1;
-            var max2name = '';
-            var max2owner = '';
-            var max3 = -1;
-            var max3name = '';
-            var max3owner = '';
-
-            data.map((repo: { stargazers_count: 0, name: '', owner: { login: '' } }) => {
-                if (repo["stargazers_count"] > max1) {
-                    max1 = repo["stargazers_count"];
-                    max1name = repo["name"];
-                    max1owner = repo["owner"]["login"];
-                }
-                else if (repo["stargazers_count"] > max2) {
-                    max2 = repo["stargazers_count"];
-                    max2name = repo["name"];
-                    max2owner = repo["owner"]["login"];
-                }
-                else if (repo["stargazers_count"] > max3) {
-                    max3 = repo["stargazers_count"];
-                    max3name = repo["name"];
-                    max3owner = repo["owner"]["login"];
-                }
-            })
-
-            Promise.all([
-                getCommitsHelper({ user: user, owner: max1owner, repoName: max1name }),
-                getCommitsHelper({ user: user, owner: max2owner, repoName: max2name }),
-                getCommitsHelper({ user: user, owner: max3owner, repoName: max3name })
-            ])
-                .then((commitNums) => {
-                    const [num1, num2, num3] = commitNums;
-                    // setCommitNum1(num1);
-                    // setCommitNum2(num2);
-                    // setCommitNum3(num3);
-                    setCommitData([
-                        {
-                            repoName: max1name,
-                            commits: num1,
-                            stars: max1
-                        },
-                        {
-                            repoName: max2name,
-                            commits: num2,
-                            stars: max2
-                        },
-                        {
-                            repoName: max3name,
-                            commits: num3,
-                            stars: max3
-                        }
-                    ]);
-
-                })
-        })
-
-    }
-
-
-    // useEffect(() => {
-    //     getCommitHistory({user: userId});
-    //     console.log(commitData);
-    // }, [userId]);
-
 
     async function handleUserData() {
         const data = await getUserDataGithub();
@@ -144,7 +71,6 @@ const MyProfileThingy = () => {
     useEffect(() => {
         handleUserData();
     }, []);
-
 
     const [walletAddress, setWalletAddress] = useState('Loading');
     //const walletAddress = 
@@ -222,9 +148,7 @@ const MyProfileThingy = () => {
                     <p>Balance: {chainData.balances}</p>
                     <p>NFTS: {chainData.nfts}</p>
 
-
                     <GithubDataDisplay user={userInfomation["username"]}/>
-                    {/* <GithubDataDisplay user='ZaneAridi1022'/> */}
 
                 </div>
             </div>
@@ -236,7 +160,7 @@ const MyProfileThingy = () => {
 
 function PersonalPage() {
 
-    if (getUserDataGithub() === null) {
+    if (!localStorage.getItem("login")) {
         return (
             <>
                 <h1 className=''>Not logged in</h1>
@@ -247,7 +171,6 @@ function PersonalPage() {
 
     const [mintAddress, setMintAddress] = useState('');
     const [githubUser, setGithubUser] = useState(getUserDataGithub().login);
-
     const [walletAddress, setWalletAddress] = useState('');
 
     const {chainData} = useContext(AuthContext);
@@ -262,15 +185,9 @@ function PersonalPage() {
         setMintAddress(e.target.value);
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks, react-hooks/exhaustive-deps
-    // useEffect(() => {
-    //     const ethereum = (window as any).ethereum;
-    //     const accounts = await ethereum.request({
-    //         method: "eth_requestAccounts",
-    //     });
-    //     console.log(accounts[0]);
-    // }, []);
-    async function SetCodeForHidden() {
+
+
+    async function SetCodeForHidden(){
         const ethereum = (window as any).ethereum;
         const accounts = await ethereum.request({
             method: "eth_requestAccounts",
@@ -328,19 +245,14 @@ function PersonalPage() {
 
     return (
         <>
-            <div className='mx-auto w-2/4 grid gap-6 mb-6 bg-gray-700 md:grid-cols-1 rounded-xl px-10 py-10'>
+            <div className='flex-1 grid gap-6 mb-6 bg-gray-700 md:grid-cols-1 rounded-xl px-10 py-10'>
                 <h1 className='text-3xl text-white font-bold text-center '>Mint NFT</h1>
                 <p className='text-white'>Your Github Username</p>
                 <div className="flex items-center border rounded-lg p-2">
-                    <input disabled type="text" className="fbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={githubUser} />
+                    <input disabled type="text" className="fbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={localStorage.getItem("login")} />
                 </div>
-
-                <p className='text-white'>Your Wallet Address</p>
-                <div className="flex items-center border rounded-lg p-2">
-                    <input disabled type="text" className="fbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={walletAddress} />
-                </div>
-
-
+                <p className='text-white'>Enter the address to mint to</p>
+                <input disabled className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' type="text" value={walletAddress} onChange={handleChangeMintAddress} />
                 <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' onClick={MintNFT}>Press to Mint</button>
             </div>
 
@@ -351,26 +263,31 @@ function PersonalPage() {
 function ProfilePage() {
 
     return (
-        <>
-            <div className='bg-gradient-to-b via-black from-gray-700 to-black text-white'>
-                <ChainBar />
-                <div className='pt-10'>
+        <div className={styles.container}>
+            <Taskbar />
+            <div className={styles.rowOfActions}>
 
-                    <MyProfileThingy />
-
-                    <div className='flex mt-10'>
-
-                        <KeplrConnect />
-                        <PersonalPage />
-
-                    </div>
-
-                    <br />
-
+                <div className={styles.rowItem}>
+                    <KeplrConnect />
                 </div>
+
+                <div className={styles.rowItem + " " + styles.metamask}>
+                    <div className='flex-1 grid gap-6 mb-6 md:grid-cols-1 rounded-xl px-10 py-10 bg-gray-700 mt-10px'>
+                        <h1 className="text-3xl text-white font-bold text-center">Connect MetaMask</h1>
+                        <p className="text-l text-white text-center">After connecting your MetaMask account we can provide you with your blockchain usage statistics!</p>
+                        <div className={styles.walletB}>
+                            <WalletButton/>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.rowItem + " " + styles.mint}>
+                    <PersonalPage />
+                </div>
+
             </div>
 
-        </>
+        </div>
     )
 }
 

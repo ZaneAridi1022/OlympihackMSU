@@ -9,10 +9,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <>
 
     <AuthProvider>
-    <BrowserRouter>
-    <App />
-    </BrowserRouter>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </AuthProvider>
 
   </>
 )
+

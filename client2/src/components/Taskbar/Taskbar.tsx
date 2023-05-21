@@ -1,6 +1,7 @@
 /* eslint-disable no-inner-declarations */
 import React from 'react'
 import './Taskbar.scss'
+
 import { loginWithGithub, setUserDataGithub } from '../../api/GithubAPI';
 
 import { useState, useEffect } from 'react';
@@ -14,7 +15,6 @@ function Taskbar() {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({login: '', avatar_url: ''});
     const [rerender, setRerender] = useState(false);
-
 
     const [searchText, setSearchText] = React.useState("");
     function handleChangeSearch(e: React.ChangeEvent<any>) {
@@ -77,7 +77,6 @@ function Taskbar() {
 
     return (
       <div className="taskbar">
-
         <div className="taskbar__search">
           <input type="text" placeholder="Search..." onChange={handleChangeSearch} />
           <button className="mx-5 rounded bg-blue-300 px-2 py-1" onClick={handleSearch}>🔍</button>
@@ -85,15 +84,16 @@ function Taskbar() {
         <div className="taskbar__actions">
           {userData.login !== ''  ?
           <>
-          <TaskbarButton label={'About us'} link={''} />
-        <button onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login");}}>
-          Log out
-        </button>
+            <TaskbarButton label={'About us'} link={''} />
+            <button onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login");}}>
+              Log out
+            </button>
 
-          <button className="circleAvatar" onClick={() => navigate("/profile")}>
-            <img className="profileImage" src={userData.avatar_url}></img>
-          </button>
+            <button className="circleAvatar" onClick={() => navigate("/profile")}>
+              <img className="profileImage" src={userData.avatar_url}></img>
+            </button>
           </>
+
           : <button onClick={loginWithGithub}>
               Log in With Github
             </button>}
@@ -101,57 +101,3 @@ function Taskbar() {
       </div>
     )
   }
-
-export default Taskbar
-
-
-
-// import React from 'react'
-// import './Taskbar.scss'
-// import TaskbarButton from './TaskbarButton'
-
-// import { getUserDataGithub } from '../../api/GithubAPI';
-// import { Link, useNavigate } from 'react-router-dom';
-
-
-// interface TaskbarProps {
-//     label: string,
-// }
-// const Taskbar:React.FC<TaskbarProps> = ({
-//   label
-// }) => {
-//   const navigate = useNavigate();
-
-//   const [searchText, setSearchText] = React.useState("");
-//     function handleChangeSearch(e: React.ChangeEvent<any>) {
-//       setSearchText(e.target.value);
-//       }
-
-//       function handleSearch() {
-//         if (searchText === "") {
-//           return;
-//         }
-//         navigate("/user/" + searchText);
-//       }
-//   return (
-//     <div className="taskbar">
-//       <div >
-//           <h3 className="taskbar__logo">TrustLink</h3>
-//       </div>
-//       <div className="taskbar__search">
-//         <input type="text" placeholder="Search..."  onChange={handleChangeSearch}/>
-//         <button className="mx-5 rounded bg-blue-300 px-2 py-1" onClick={handleSearch}>🔍</button>
-//       </div>
-//       <div className="taskbar__actions">
-//         <TaskbarButton label={'About us'} link={''} />
-//         {getUserDataGithub()  ?
-//         <button className="circleAvatar" onClick={() => navigate("/profile")}>
-//         <img className="profileImage" src={getUserDataGithub().avatar_url}></img>
-//         </button>
-//         : <TaskbarButton label='Login' link={'/login'} />}
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default Taskbar

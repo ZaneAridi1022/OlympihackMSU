@@ -88,7 +88,7 @@ export function getUserDataGithub() {
     return JSON.parse(localStorage.getItem('userData')!);
 }
 
-  
+
 
 export function loginWithGithub() {
     window.location.assign("https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID);
