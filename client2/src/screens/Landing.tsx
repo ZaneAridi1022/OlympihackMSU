@@ -42,18 +42,6 @@ function Landing() {
           }
           getAccessToken();
       }
-      const provider = new ethers.JsonRpcProvider("https://rpc2.sepolia.org");
-
-      const sbAddress = "0x3630486E6F1EB907E86c38178207e50011560De8"
-
-      // The ERC-20 Contract ABI, which is a common contract interface
-      // for tokens (this is the Human-Readable ABI format)
-      const sbtAbi = [
-        "function getTokenURI(uint256 _tokenId) public view returns(string memory)"
-      ];
-      const contractInstance = new ethers.Contract(sbAddress, sbtAbi, provider);
-      setContract(contractInstance);
-
 
   }, []);
 
@@ -64,7 +52,16 @@ function Landing() {
 
         handleUserData();
     }
-    
+    const provider = new ethers.JsonRpcProvider("https://rpc2.sepolia.org");
+    const sbAddress = "0x3630486E6F1EB907E86c38178207e50011560De8";
+    const sbtAbi = ["function getTokenURI(uint256 _tokenId) public view returns (string memory)"];
+    const contractInstance = new ethers.Contract(sbAddress, sbtAbi, provider);
+    contractInstance.getTokenURI(1).then((uri) => {
+      const decodedURI = atob(uri.split(",")[1]);
+      const data = JSON.parse(decodedURI);
+      console.log("URI: ",data.image);
+      setContract(data.image)
+    });  
 }, []);
 
 async function handleUserData() {
@@ -75,6 +72,8 @@ async function handleUserData() {
 
     console.log("userData: ",userData);
 }
+
+
 
 
   return (
@@ -88,7 +87,7 @@ async function handleUserData() {
         </div>
 
         <div className="flex flex-col justify-center content-center">
-        <img className="object-contain h-96 w-96 border-4" src={NFTImage} alt="NFT" />
+        <img className="object-contain h-96 w-96 border-4" src={contract} alt="NFT" />
         </div>
 
       </div>

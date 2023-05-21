@@ -14,7 +14,7 @@ async function NFTDisplay({ contract, tokenId }){
     }, [contract, tokenId]);
 
 
-  return <img className="object-contain h-96 w-96 border-4" src={tokenURI} alt="NFT" />;
+  return tokenURI;
 }
 
 export default NFTDisplay;
