@@ -5,6 +5,7 @@ import './App.css';
 // import GithubLoginScreen from "../../client2/src/screens/GithubLoginScreen";
 import ProfilePage from "../../client2/src/screens/Profile";
 import Landing from "../../client2/src/screens/Landing";
+import AboutUs from "../../client2/src/screens/AboutMe";
 
 import GithubLoginScreen from './screens/GithubLoginScreen';
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/login" element={<GithubLoginScreen/>}/>
         <Route path="/user/:userId" element={<UserPage />}/>
+        <Route path="/AboutUs" element={<AboutUs/>}/>
       </Routes>
     </>
   );
