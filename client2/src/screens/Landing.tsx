@@ -78,7 +78,7 @@ async function handleUserData() {
 
 
   return (
-    <div className="flex flex-col bg-black min-h-screen text-white border-white">
+    <div className="h-screen w-full bg-gradient-to-b via-black from-gray-700 to-black text-white flex flex-col min-h-screen text-white border-white">
       <Taskbar />
       <div className="flex flex-row flex-grow justify-around content-center mb-5">
 

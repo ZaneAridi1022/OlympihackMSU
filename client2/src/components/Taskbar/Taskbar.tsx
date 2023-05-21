@@ -85,7 +85,7 @@ function Taskbar() {
         <div className="taskbar__actions">
           {userData.login !== ''  ?
           <>
-          <TaskbarButton label={'About us'} link={''} />
+          <TaskbarButton label={'About us'} link={'/AboutUs'} />
         <button onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login");}}>
           Log out
         </button>

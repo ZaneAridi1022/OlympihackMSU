@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import './ChainBar.scss'
 import WalletButton from './WalletButton'
+import { AuthContext } from '../../utils/AuthContext'
+
 // import SelectChains from '../Dropdown/SelectChains';
 
 
 const ChainBar = () => {
+ 
+
   // const [mintChain,onSelect] = useState("mainnet")
 
-  // useEffect(() => {
-  //     console.log(mintChain)
-  // }, [mintChain])
 
 
   return (
