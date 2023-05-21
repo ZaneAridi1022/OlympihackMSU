@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connectJackalandUpload, connectWallet, checkFolder } from '../components/KYCinput/input';
+import {toast} from 'react-toastify';
 
 function uploadFileToJackal() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -17,10 +18,14 @@ function uploadFileToJackal() {
       const wallet = await connectWallet();
       await connectJackalandUpload(wallet, file); // Pass the file to your function for upload
       const folder = await checkFolder(wallet, "s/kyc");
-      console.log("Folder", folder);
+      if (folder !== null) {
+        toast.success("Identification uploaded successfully");
+      }else {
+        toast.error("Identification upload failed");
+      }
 
     } else {
-      console.error('No file selected.');
+      console.error('No file selected.'); 
     }
   };
 

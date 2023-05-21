@@ -1,17 +1,32 @@
+/* eslint-disable no-inner-declarations */
 import React from 'react'
 import './Taskbar.scss'
-import { loginWithGithub } from '../../api/GithubAPI';
+
+import { loginWithGithub, setUserDataGithub } from '../../api/GithubAPI';
 
 import { useState, useEffect } from 'react';
 
 import { getUserDataGithub } from '../../api/GithubAPI';
 import { Link, useNavigate } from 'react-router-dom';
+import TaskbarButton from './TaskbarButton';
 
 
 function Taskbar() {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({login: '', avatar_url: ''});
     const [rerender, setRerender] = useState(false);
+
+    const [searchText, setSearchText] = React.useState("");
+    function handleChangeSearch(e: React.ChangeEvent<any>) {
+      setSearchText(e.target.value);
+      }
+
+      function handleSearch() {
+        if (searchText === "") {
+          return;
+        }
+        navigate("/user/" + searchText);
+      }
 
     async function getUserData() {
           await fetch("http://localhost:4000/getUserData", {
@@ -23,6 +38,7 @@ function Taskbar() {
               return response.json();
           }).then((data) => {
               console.log(data);
+              setUserDataGithub(data);
               setUserData(data);
           })
     }
@@ -61,20 +77,23 @@ function Taskbar() {
 
     return (
       <div className="taskbar">
-        {/* <div >
-            <h3 className="taskbar__logo">TrustLink</h3>
-        </div> */}
         <div className="taskbar__search">
-          <input type="text" placeholder="Search..." />
+          <input type="text" placeholder="Search..." onChange={handleChangeSearch} />
+          <button className="mx-5 rounded bg-blue-300 px-2 py-1" onClick={handleSearch}>🔍</button>
         </div>
-        <button onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login");}}>
-          Log out
-        </button>
         <div className="taskbar__actions">
           {userData.login !== ''  ?
-          <button className="circleAvatar" onClick={() => navigate("/profile")}>
-            <img className="profileImage" src={userData.avatar_url}></img>
-          </button>
+          <>
+            <TaskbarButton label={'About us'} link={''} />
+            <button onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login");}}>
+              Log out
+            </button>
+
+            <button className="circleAvatar" onClick={() => navigate("/profile")}>
+              <img className="profileImage" src={userData.avatar_url}></img>
+            </button>
+          </>
+
           : <button onClick={loginWithGithub}>
               Log in With Github
             </button>}
@@ -82,5 +101,3 @@ function Taskbar() {
       </div>
     )
   }
-
-export default Taskbar
