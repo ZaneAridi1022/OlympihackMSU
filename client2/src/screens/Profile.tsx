@@ -217,13 +217,12 @@ const MyProfileThingy = () => {
                     <p>{userInfomation["bio"]}</p>
                 </div>
                 <div className="rightpange">
-                    <h1>BlockChain Stats</h1>
+                    <h1 className='text-2xl font-bold'>BlockChain Stats</h1>
                     <p>Wallet Address: {chainData.address}</p>
                     <p>Balance: {chainData.balances}</p>
                     <p>NFTS: {chainData.nfts}</p>
 
 
-                    <h1>Github Stats</h1>
                     <GithubDataDisplay user={userInfomation["username"]}/>
                     {/* <GithubDataDisplay user='ZaneAridi1022'/> */}
 
@@ -335,6 +334,13 @@ function PersonalPage() {
                 <div className="flex items-center border rounded-lg p-2">
                     <input disabled type="text" className="fbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={githubUser} />
                 </div>
+
+                <p className='text-white'>Your Wallet Address</p>
+                <div className="flex items-center border rounded-lg p-2">
+                    <input disabled type="text" className="fbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={walletAddress} />
+                </div>
+
+
                 <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' onClick={MintNFT}>Press to Mint</button>
             </div>
 
