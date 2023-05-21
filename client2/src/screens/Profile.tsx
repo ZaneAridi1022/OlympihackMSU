@@ -155,14 +155,6 @@ function PersonalPage() {
         setMintAddress(e.target.value);
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks, react-hooks/exhaustive-deps
-    // useEffect(() => {
-    //     const ethereum = (window as any).ethereum;
-    //     const accounts = await ethereum.request({
-    //         method: "eth_requestAccounts",
-    //     });
-    //     console.log(accounts[0]);
-    // }, []);
     async function SetCodeForHidden(){
         const ethereum = (window as any).ethereum;
         const accounts = await ethereum.request({
