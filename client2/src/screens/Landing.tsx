@@ -1,15 +1,76 @@
+/* eslint-disable no-inner-declarations */
 import React from "react";
 import Taskbar from "../components/Taskbar/Taskbar";
 import NFTImage from "../assets/SoulBoundNFTImage.svg"
+import GithubLoginScreen from "./GithubLoginScreen";
+
+import { useState, useEffect } from "react";
+
+import { getUserData, isUserLoggedIn, setUserDataGithub } from "../api/GithubAPI";
 
 function Landing() {
+
+  const [rerender, setRerender] = useState(false);
+  const [userData, setUserData] = useState({login: '', avatar_url: ''});
+  const [commitData, setCommitData] = useState([{repoName:'',
+                                                  commits:0,
+                                                  stars:0
+                                              }]);
+
+
+  useEffect(() => {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const codeParam = urlParams.get("code");
+      console.log(codeParam);
+
+      if (codeParam && (localStorage.getItem("accessToken") === null)) {
+          async function getAccessToken() {
+              await fetch("http://localhost:4000/getAccessToken?code=" + codeParam, {
+                  method: "GET"
+              }).then((response) => {
+                  return response.json();
+              }).then((data) => {
+                  if (data.access_token) {
+                      localStorage.setItem("accessToken",data.access_token);
+                      setRerender(!rerender);
+                  }
+              })
+          }
+          getAccessToken();
+      }
+
+
+
+  }, []);
+
+
+  useEffect(() => {
+
+    if (isUserLoggedIn()){
+
+        handleUserData();
+    }
+    
+}, []);
+
+async function handleUserData() {
+    const data = await getUserData();
+    console.log(data);
+    setUserData(data);
+    setUserDataGithub(data);
+
+    console.log("userData: ",userData);
+}
+
+
   return (
     <div className="flex flex-col bg-black min-h-screen text-white border-white">
       <Taskbar />
       <div className="flex flex-row flex-grow justify-around content-center mb-5">
 
         <div className="flex flex-col justify-center content-center">
-          <h1 className="text-7xl">Welcome to Trust Link</h1>
+          <h1 className="text-7xl">Trust Link</h1>
           <p className="text-4xl mt-4">Don't Trust, Just Verfiy</p>
         </div>
 
@@ -18,7 +79,9 @@ function Landing() {
         </div>
 
       </div>
+ 
     </div>
+
   );
 }
 

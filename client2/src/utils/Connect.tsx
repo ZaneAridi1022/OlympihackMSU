@@ -20,63 +20,48 @@ async function getNFTS(address: ethers.AddressLike,chainID: string){
   return data;
 }
 
-
 async function getWallet() {
     const provider = new ethers.BrowserProvider(window.ethereum, "any");
     const accounts = await provider.send("eth_requestAccounts", []);
     const account = accounts[0];
-
     const signer = provider.getSigner();
-
-    const address = await (await signer).getAddress();
-    console.log(address);
-    const count = await provider.getTransactionCount(address);
-    return address;
+    console.log(account);
+    return account;
   }
 
-
-async function getAllTransactions(address: ethers.AddressLike, chains: string[] = []) {
+async function getAllTransactions(address: ethers.AddressLike) {
     let count = 0;
     let balances = BigInt(0);
     if (window.ethereum) {
       try {
         // Request access to the user's MetaMask account
         await window.ethereum.enable();
-        if (chains.includes("mainnet")) {
           // Create an ethers provider using MetaMask's provider
-          const provider = new ethers.BrowserProvider(window.ethereum);
+            const provider = new ethers.BrowserProvider(window.ethereum);
           // Get the transaction history of the address
-          const ethCount = await provider.getTransactionCount(address);
-          const balance = await provider.getBalance(address);
-          const ethBalance = ethers.toBigInt(balance);
-           count += ethCount;
-           balances += ethBalance;
-        }
-        if (chains.includes("polygon")) {
+            const ethCount = await provider.getTransactionCount(address);
+            const ETHbalance = await provider.getBalance(address);
+            const ethBalance = ethers.toBigInt(ETHbalance);
+            count += ethCount;
+            balances += ethBalance;
             const Polygon = new ethers.JsonRpcProvider("https://polygon-rpc.com/");
             const PolygonCount = await Polygon.getTransactionCount(address);
-            const balance = await Polygon.getBalance(address);
-            const polygonBalance = ethers.toBigInt(balance);
+            const MATICbalance = await Polygon.getBalance(address);
+            const polygonBalance = ethers.toBigInt(MATICbalance);
             count += PolygonCount;
             balances += polygonBalance;
-        }
-        if (chains.includes("fantom")) {
             const Fantom = new ethers.JsonRpcProvider("https://rpcapi.fantom.network/");
             const FantomCount = await Fantom.getTransactionCount(address);
             count += FantomCount;
-            const balance = await Fantom.getBalance(address);
-            const fantomBalance = ethers.toBigInt(balance);
+            const FTMbalance = await Fantom.getBalance(address);
+            const fantomBalance = ethers.toBigInt(FTMbalance);
             balances += fantomBalance;
-
-        }
-        if (chains.includes("avalanche")) {
             const Avalanche = new ethers.JsonRpcProvider("https://api.avax.network/ext/bc/C/rpc");
             const AvalancheCount = await Avalanche.getTransactionCount(address);
             count += AvalancheCount;
-            const balance = await Avalanche.getBalance(address);
-            const avalancheBalance = ethers.toBigInt(balance);
+            const Avaxbalance = await Avalanche.getBalance(address);
+            const avalancheBalance = ethers.toBigInt(Avaxbalance);
             balances += avalancheBalance;
-        }
 
         const return_json = {tx_count: count, balances: ethers.formatEther(balances)}
         console.log(return_json);

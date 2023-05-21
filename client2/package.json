@@ -12,7 +12,7 @@
   "dependencies": {
     "@axelar-network/axelar-gmp-sdk-solidity": "^3.3.0",
     "dotenv": "^16.0.3",
-    "ethers": "^6.3.0",
+    "ethers": "^6.2.3",
     "jackal.js": "^2.0.0-rc.1",
     "node-stdlib-browser": "^1.2.0",
     "react": "^18.2.0",
