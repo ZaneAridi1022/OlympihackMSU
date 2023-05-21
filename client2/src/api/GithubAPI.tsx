@@ -42,6 +42,36 @@ export function isUserLoggedIn() {
 //     return localStorage.getItem('githubUserName');
 // }
 
+export function getScoreNowBitch({user}: {user: any}) {
+
+    const weights = {
+        followers: 0.4,
+        following: 0.2,
+        public_repos: 0.3,
+        time_created: 0.1
+      };
+    console.log("user: ",user);
+    // const { followers, following, public_repos, created_at } = user;
+    const followers = 0;
+    const following = user["following"];
+    const public_repos = user.public_repos;
+    const created_at = user.created_at;
+
+
+
+    const timeCreated = Date.now() - new Date(created_at).getTime();
+    const normalizedTimeCreated = timeCreated / (1000 * 60 * 60 * 24 * 365); // Convert milliseconds to years
+
+    const score =
+      (weights.followers * followers +
+        weights.following * following +
+        weights.public_repos * public_repos +
+        weights.time_created * normalizedTimeCreated) /
+      (weights.followers + weights.following + weights.public_repos + weights.time_created);
+    console.log("score: ",score);
+    return score.toFixed(2); // Round the score to two decimal places
+}
+
 export function setUserDataGithub(data: any) {
     // if (!isUserLoggedIn()) {
     //     return null;

@@ -2,7 +2,10 @@
     display: flex;
     align-items: center;
     padding: 5px;
-    background: #000000c2;
+    position: absolute;
+    background: transparent;
+    width: 100vw;
+    padding-left: 50px;
 
     color: #ffffff;
 

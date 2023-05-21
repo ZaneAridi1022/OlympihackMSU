@@ -6,7 +6,7 @@ import KeplrConnect from '../utils/KeplrConnect';
 
 import { ethers } from 'ethers';
 
-import { getCommitsHelper, getUserDataGithub } from "../api/GithubAPI";
+import { getCommitsHelper, getUserDataGithub, getScoreNowBitch } from "../api/GithubAPI";
 import GithubDataDisplay from '../githubdata/GithubDataDisplay';
 
 
@@ -25,6 +25,9 @@ const MyProfileThingy = () => {
         commits: 0,
         stars: 0
     }]);
+
+    // const credibilityScore = calculateCredibilityScore();
+    const [credibilityScoreThingy, setCredibilityScoreThingy] = useState(-1);
 
     const [userInfomation, setUserInfomation] = useState({
         "username": "",
@@ -109,9 +112,6 @@ const MyProfileThingy = () => {
 
     }
 
-    // useEffect(() => {
-
-    // },[commitData]);
 
     // useEffect(() => {
     //     getCommitHistory({user: userId});
@@ -121,6 +121,8 @@ const MyProfileThingy = () => {
 
     async function handleUserData() {
         const data = await getUserDataGithub();
+
+        console.log("Data: ", data);
         if (!data) {
             return;
         }
@@ -134,6 +136,9 @@ const MyProfileThingy = () => {
             "UserScore": 1300,
         }
         setUserInfomation(userInfomation);
+
+        // const credibilityScore = getScoreNowBitch(JSON.stringify(data));
+        // setCredibilityScoreThingy(credibilityScore);
     }
     useEffect(() => {
         handleUserData();
@@ -176,9 +181,9 @@ const MyProfileThingy = () => {
     // }, [])
 
     //BLOCKCHAIN DATA 
-    const {chainData} = React.useContext(AuthContext);
+    const { chainData } = React.useContext(AuthContext);
 
-    console.log("FROM SHIT",chainData);
+    console.log("FROM SHIT", chainData);
 
 
     return (
@@ -206,6 +211,7 @@ const MyProfileThingy = () => {
 
                     <h3>Score</h3>
                     <p>{userInfomation["UserScore"]}</p>
+                    {/* <p>{credibilityScoreThingy}</p> */}
                     <h3>Bio</h3>
                     <p>{userInfomation["bio"]}</p>
                 </div>
@@ -225,22 +231,7 @@ const MyProfileThingy = () => {
                         }
                     </div>
 
-                    <h1>
-                        Github Contributions
-                    </h1>
-                    <div className="post">
-                        {
-                            userInfomation["Github Contributions"].map((: any) => {
-                                return (
-                                    <>
-                                        <h2>{githubContribution["RepoName"]}</h2>
-                                        <p>stars: {githubContribution["stars"]}</p>
-                                        <p>number of commits {githubContribution.commit.length }</p>
-
-                                    </>
-                                )
-                            })
-                        }
+                    
 
                     </div> */}
                     {/* <GithubDataDisplay user={userInfomation["username"]}/> */}
@@ -269,7 +260,7 @@ function PersonalPage() {
     const [githubUser, setGithubUser] = useState(getUserDataGithub().login);
 
     const [walletAddress, setWalletAddress] = useState('');
-    const {chainData} = useContext(AuthContext);
+    const { chainData } = useContext(AuthContext);
 
     console.log(chainData);
 
@@ -289,7 +280,7 @@ function PersonalPage() {
     //     });
     //     console.log(accounts[0]);
     // }, []);
-    async function SetCodeForHidden(){
+    async function SetCodeForHidden() {
         const ethereum = (window as any).ethereum;
         const accounts = await ethereum.request({
             method: "eth_requestAccounts",
@@ -362,17 +353,23 @@ function ProfilePage() {
 
     return (
         <>
-            <ChainBar />
-            <div className='flex mt-10'>
+            <div className='bg-gradient-to-b via-black from-gray-700 to-black text-white'>
+                <ChainBar />
+                <div className='pt-10'>
 
-            <KeplrConnect />
-            <PersonalPage />
+                    <MyProfileThingy />
 
+                    <div className='flex mt-10'>
+
+                        <KeplrConnect />
+                        <PersonalPage />
+
+                    </div>
+
+                    <br />
+
+                </div>
             </div>
-
-            <br />
-
-            <MyProfileThingy />
 
         </>
     )
