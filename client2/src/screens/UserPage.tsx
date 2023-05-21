@@ -8,14 +8,18 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
 import { useParams } from 'react-router-dom';
+import { getAllTransactions } from '../utils/Connect';
 
 import './UserPage.scss'
 import Taskbar from '../components/Taskbar/Taskbar';
+import GithubDataDisplay from '../githubdata/GithubDataDisplay';
 
 const UserPage = () => {
 
 
     const { userId } = useParams() as { userId: string };
+
+    const [chainData, setChainData] = useState({});
 
 
     const [commitData, setCommitData] = useState([{
@@ -181,12 +185,27 @@ const UserPage = () => {
         }
     }
 
-    useEffect(() => {
-        GetAddressFromGithub(userId);
-    }, [])
+    // useEffect(() => {
+    //     GetAddressFromGithub(userId).then((address) => {
 
 
+    //         console.log("address" + walletAddress);
+    //         // make wallet address lowercase
+    //         // setWalletAddress(walletAddress.toLowerCase());
+    //         // const transactions = getAllTransactions(walletAddress);
+    //         // transactions.tx_count
+    //         // transactions.balances
+    //         console.log("transactions");
+    //         // console.log(transactions);
+    //         // console.log(transactions);
 
+
+    //         // setChainData(transactions);
+
+    //     });
+
+        
+    // }, [walletAddress])
 
 
     // if (getUserDataGithub() && userId === getUserDataGithub().login){
@@ -229,6 +248,16 @@ const UserPage = () => {
                     </div>
                     <div className="rightpange">
                         <h1>BlockChain Contribututions</h1>
+
+
+
+                        <h1 className='text-2xl font-bold'>BlockChain Stats</h1>
+                        {/* <p>Wallet Address: {chainData.address}</p>
+                        <p>Balance: {chainData.tx_count}</p>
+                        <p>NFTS: {chainData.nfts}</p> */}
+
+                        <GithubDataDisplay user={userId}/>
+
 
 
 
