@@ -5,5 +5,10 @@
     background-repeat:   no-repeat;
     background-position: center center; 
     height: 100vh;
-    overflow-y: hidden;
+    scroll-behavior: smooth;
+}
+
+.remPage{
+    height: 20vh;
+
 }

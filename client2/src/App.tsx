@@ -6,6 +6,10 @@ import './App.css';
 import ProfilePage from "../../client2/src/screens/Profile";
 import Landing from "../../client2/src/screens/Landing";
 
+import GithubLoginScreen from './screens/GithubLoginScreen';
+
+import UserPage from './screens/UserPage';
+
 function App() {
   // forward the user to the github login screen (we pass in the client ID)
   // User is now on the github side and login
@@ -16,6 +20,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing/>}/>
         <Route path="/profile" element={<ProfilePage/>}/>
+        <Route path="/login" element={<GithubLoginScreen/>}/>
+        <Route path="/user/:userId" element={<UserPage />}/>
       </Routes>
     </>
   );

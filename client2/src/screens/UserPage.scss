@@ -1,0 +1,48 @@
+
+
+
+.conintainer{
+    width: 80%;
+    margin: auto;
+    display: flex;
+    .LeftPane{
+        background: rgb(185, 183, 183);
+        width: 400px;
+        padding: 20px;
+        margin-top: 30px;
+        margin-right: 10px;
+        border-radius: 15px;
+        height: fit-content;
+        &__ProfileImage{
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            // center it
+            display: block;
+            margin: auto;
+        }
+    }
+    .rightpange{
+        margin-left: 10px;
+        margin-top: 30px;
+        background: rgb(185, 183, 183);
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+        height: fit-content;
+    }
+}
+
+.hashtags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    &__tags{
+        background: rgb(127, 125, 125);
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 15px;
+    }
+}
