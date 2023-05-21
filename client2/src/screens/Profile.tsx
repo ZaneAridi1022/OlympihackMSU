@@ -6,7 +6,7 @@ import KeplrConnect from '../utils/KeplrConnect';
 
 import { ethers } from 'ethers';
 
-import { getCommitsHelper, getUserDataGithub, getScoreNowBitch } from "../api/GithubAPI";
+import { getCommitsHelper, getUserDataGithub } from "../api/GithubAPI";
 import GithubDataDisplay from '../githubdata/GithubDataDisplay';
 
 
@@ -27,7 +27,7 @@ const MyProfileThingy = () => {
     }]);
 
     // const credibilityScore = calculateCredibilityScore();
-    const [credibilityScoreThingy, setCredibilityScoreThingy] = useState(-1);
+    // const [credibilityScoreThingy, setCredibilityScoreThingy] = useState(-1);
 
     const [userInfomation, setUserInfomation] = useState({
         "username": "",
