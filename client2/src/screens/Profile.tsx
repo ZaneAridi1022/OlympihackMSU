@@ -5,29 +5,24 @@ import ChainBar from '../components/ChainBar/ChainBar';
 import KeplrConnect from '../utils/KeplrConnect';
 
 import { ethers } from 'ethers';
+import  Taskbar  from '../components/Taskbar/Taskbar';
+import WalletButton from '../components/ChainBar/WalletButton';
 
 import { getCommitsHelper, getUserDataGithub } from "../api/GithubAPI";
-
+import GithubDataDisplay from '../components/githubdata/GithubDataDisplay';
+import styles from "./Profile.module.scss";
 
 
 const MyProfileThingy = () => {
 
 
-    if (getUserDataGithub() === null) {
+    if (!localStorage.getItem('login')) {
         return (
             <>
                 <h1>Not logged in</h1>
             </>
         )
     }
-
-
-
-    const [commitData, setCommitData] = useState([{
-        repoName: '',
-        commits: 0,
-        stars: 0
-    }]);
 
     const [userInfomation, setUserInfomation] = useState({
         "username": "",
@@ -39,87 +34,6 @@ const MyProfileThingy = () => {
         "Github Contributions": [],
         "blockchain-contributions": []
     });
-
-    async function getCommitHistory({ user }: { user: string }) {
-        await fetch("http://localhost:4000/getRepos?user=" + user, {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("accessToken")
-            }
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            console.log(data);
-            //setCommitData(data);
-            var max1 = -1;
-            var max1name = '';
-            var max1owner = '';
-            var max2 = -1;
-            var max2name = '';
-            var max2owner = '';
-            var max3 = -1;
-            var max3name = '';
-            var max3owner = '';
-
-            data.map((repo: { stargazers_count: 0, name: '', owner: { login: '' } }) => {
-                if (repo["stargazers_count"] > max1) {
-                    max1 = repo["stargazers_count"];
-                    max1name = repo["name"];
-                    max1owner = repo["owner"]["login"];
-                }
-                else if (repo["stargazers_count"] > max2) {
-                    max2 = repo["stargazers_count"];
-                    max2name = repo["name"];
-                    max2owner = repo["owner"]["login"];
-                }
-                else if (repo["stargazers_count"] > max3) {
-                    max3 = repo["stargazers_count"];
-                    max3name = repo["name"];
-                    max3owner = repo["owner"]["login"];
-                }
-            })
-
-            Promise.all([
-                getCommitsHelper({ user: user, owner: max1owner, repoName: max1name }),
-                getCommitsHelper({ user: user, owner: max2owner, repoName: max2name }),
-                getCommitsHelper({ user: user, owner: max3owner, repoName: max3name })
-            ])
-                .then((commitNums) => {
-                    const [num1, num2, num3] = commitNums;
-                    // setCommitNum1(num1);
-                    // setCommitNum2(num2);
-                    // setCommitNum3(num3);
-                    setCommitData([
-                        {
-                            repoName: max1name,
-                            commits: num1,
-                            stars: max1
-                        },
-                        {
-                            repoName: max2name,
-                            commits: num2,
-                            stars: max2
-                        },
-                        {
-                            repoName: max3name,
-                            commits: num3,
-                            stars: max3
-                        }
-                    ]);
-
-                })
-        })
-
-    }
-
-    // useEffect(() => {
-
-    // },[commitData]);
-
-    // useEffect(() => {
-    //     getCommitHistory({user: userId});
-    //     console.log(commitData);
-    // }, [userId]);
 
 
     async function handleUserData() {
@@ -141,8 +55,6 @@ const MyProfileThingy = () => {
     useEffect(() => {
         handleUserData();
     }, []);
-
-
 
     const [walletAddress, setWalletAddress] = useState('Loading');
     //const walletAddress = 
@@ -210,38 +122,7 @@ const MyProfileThingy = () => {
                 </div>
                 <div className="rightpange">
                     <h1>BlockChain Contribututions</h1>
-                    {/* <div className="post">
-                        {
-                            userInfomation["blockchain-contributions"].map((blockchainContribution: any) => {
-                                return (
-                                    <>
-                                        <h2>{blockchainContribution["name"]}</h2>
-                                        <p>{blockchainContribution["description"]}</p>
-
-                                    </>
-                                )
-                            })
-                        }
-                    </div>
-
-                    <h1>
-                        Github Contributions
-                    </h1>
-                    <div className="post">
-                        {
-                            userInfomation["Github Contributions"].map((: any) => {
-                                return (
-                                    <>
-                                        <h2>{githubContribution["RepoName"]}</h2>
-                                        <p>stars: {githubContribution["stars"]}</p>
-                                        <p>number of commits {githubContribution.commit.length }</p>
-
-                                    </>
-                                )
-                            })
-                        }
-
-                    </div> */}
+                    
 
                 </div>
             </div>
@@ -253,7 +134,7 @@ const MyProfileThingy = () => {
 
 function PersonalPage() {
 
-    if (getUserDataGithub() === null) {
+    if (!localStorage.getItem("login")) {
         return (
             <>
                 <h1 className=''>Not logged in</h1>
@@ -263,7 +144,7 @@ function PersonalPage() {
 
 
     const [mintAddress, setMintAddress] = useState('');
-    const [githubUser, setGithubUser] = useState(getUserDataGithub().login);
+    const [githubUser, setGithubUser] = useState(localStorage.getItem("login"));
     const [walletAddress, setWalletAddress] = useState('');
 
     // function handleChangeGithubUser(e: React.ChangeEvent<any>) {
@@ -333,17 +214,16 @@ function PersonalPage() {
 
     return (
         <>
-            <div className='mx-auto w-2/4 grid gap-6 mb-6 bg-gray-700 md:grid-cols-1 rounded-xl px-10 py-10'>
+            <div className='flex-1 grid gap-6 mb-6 bg-gray-700 md:grid-cols-1 rounded-xl px-10 py-10'>
                 <h1 className='text-3xl text-white font-bold text-center '>Mint NFT</h1>
                 <p className='text-white'>Your Github Username</p>
                 {/* <input disabled type="text" className='' value={githubUser} /> */}
                 <div className="flex items-center border rounded-lg p-2">
-                    <input disabled type="text" className="fbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={githubUser} />
+                    <input disabled type="text" className="fbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={localStorage.getItem("login")} />
                 </div>
-                <p className='text-white'>This should be changed to msg.sender later</p>
                 <p className='text-white'>Enter the address to mint to</p>
                 <input disabled className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' type="text" value={walletAddress} onChange={handleChangeMintAddress} />
-                <br />
+
                 <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' onClick={MintNFT}>Press to Mint</button>
             </div>
 
@@ -354,25 +234,32 @@ function PersonalPage() {
 function ProfilePage() {
 
     return (
-        <>
-            <ChainBar />
-            <KeplrConnect />
-            <br />
-            <br />
-            <br />
-            <PersonalPage />
+        <div className={styles.container}>
+            <Taskbar />
+            <div className={styles.rowOfActions}>
 
+                <div className={styles.rowItem}>
+                    <KeplrConnect />
+                </div>
 
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
+                <div className={styles.rowItem + " " + styles.metamask}>
+                    <div className='flex-1 grid gap-6 mb-6 md:grid-cols-1 rounded-xl px-10 py-10 bg-gray-700 mt-10px'>
+                        <h1 className="text-3xl text-white font-bold text-center">Connect MetaMask</h1>
+                        <p className="text-l text-white text-center">After connecting your MetaMask account we can provide you with your blockchain usage statistics!</p>
+                        <div className={styles.walletB}>
+                            <WalletButton/>
+                        </div>
+                    </div>
+                </div>
 
-            <MyProfileThingy />
+                <div className={styles.rowItem + " " + styles.mint}>
+                    <PersonalPage />
+                </div>
 
-        </>
+            </div>
+                
+
+        </div>
     )
 }
 

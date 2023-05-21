@@ -143,6 +143,17 @@ function GithubLoginScreen() {
         
     }
 
+    async function GetUserInfoWithId({user}: {user: string}) {
+        await fetch("http://localhost:4000/getUserInfoWithId?user="+user, {
+            method: "GET"
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+            
+        })
+    }
+
 
 
       
@@ -150,7 +161,7 @@ function GithubLoginScreen() {
     return (
         <>
             <h1>Github Login</h1>
-            
+            <button onClick={() => GetUserInfoWithId({user:"ZaneAridi1022"})}>Test userId stuff</button>
             {localStorage.getItem("accessToken") ?
                 <>
                     <h1>We have the access token</h1>

@@ -81,6 +81,21 @@ app.get('/getCommits', async function(request, response){
     })
 })
 
+app.get('/getUserInfoWithId', async function(request, response){
+    console.log(request.get("Authorization"));
+    await fetch("https://api.github.com/users/" + request.query.user, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json"
+        }
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        console.log(data);
+        response.json(data);
+    })
+})
+
 app.listen(4000, function () {
     console.log("CORS server running on port 4000");
 })
