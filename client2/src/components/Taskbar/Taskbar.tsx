@@ -86,7 +86,7 @@ function Taskbar() {
           {userData.login !== ''  ?
           <>
           <TaskbarButton label={'About us'} link={'/AboutUs'} />
-        <button onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login");}}>
+        <button className='MainButton' onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login");}}>
           Log out
         </button>
 
@@ -94,7 +94,7 @@ function Taskbar() {
             <img className="profileImage" src={userData.avatar_url}></img>
           </button>
           </>
-          : <button onClick={loginWithGithub}>
+          : <button className='MainButton MainButton__taller' onClick={loginWithGithub}>
               Log in With Github
             </button>}
         </div>
