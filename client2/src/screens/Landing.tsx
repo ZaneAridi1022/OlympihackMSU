@@ -9,6 +9,7 @@ import { ethers } from "ethers";
 import { useState, useEffect } from "react";
 import { getUserData, isUserLoggedIn, setUserDataGithub } from "../api/GithubAPI";
 import NFTDisplay from "../utils/utils";
+import styles from './Landing.module.scss';
 
 
 function Landing() {

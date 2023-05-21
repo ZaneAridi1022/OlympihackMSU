@@ -5,10 +5,12 @@ import './Taskbar.scss'
 import { loginWithGithub, setUserDataGithub } from '../../api/GithubAPI';
 
 import { useState, useEffect } from 'react';
+import TaskbarButton from './TaskbarButton';
 
 import { getUserDataGithub } from '../../api/GithubAPI';
 import { Link, useNavigate } from 'react-router-dom';
-import TaskbarButton from './TaskbarButton';
+
+// import TaskbarButton from './TaskbarButton';
 
 
 function Taskbar() {
@@ -101,3 +103,5 @@ function Taskbar() {
       </div>
     )
   }
+
+export default Taskbar;

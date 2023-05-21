@@ -1,34 +1,34 @@
-// import React from 'react'
+import React from 'react'
 
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
+import './TaskbarButton.scss'
 
-// import './TaskbarButton.scss'
-
-// interface TaskbarButtonProps {
-//     label: string,
-//     link: string,
+interface TaskbarButtonProps {
+    label: string,
+    link: string,
     
-//     onClickFunction?: () => void,
-// }
+    onClickFunction?: () => void,
+}
 
-// const TaskbarButton:React.FC<TaskbarButtonProps> = ({
-//     label,
-//     link,
-//     onClickFunction,
-// }) => {
-//   return (
-//     <>
-//     <div className='TaskBarButton' onClick={loginWithGithub}>
+const TaskbarButton:React.FC<TaskbarButtonProps> = ({
+    label,
+    link,
+    onClickFunction,
+}) => {
+  return (
+    <>
+    <div className='TaskBarButton'>
+    <Link className='ATAG' to={link} onClick={onClickFunction}>
 
-//         <span></span>
-//         <span></span>
-//         <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
         
-//     {label}
-//     </div>
-//     </>
-//   )
-// }
+    {label}</Link>
+    </div>
+    </>
+  )
+}
 
-// export default TaskbarButton
+export default TaskbarButton
