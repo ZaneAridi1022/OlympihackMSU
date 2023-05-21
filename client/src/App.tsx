@@ -7,6 +7,7 @@ import ProfilePage from "./screens/Profile";
 import Landing from "./screens/Landing";
 import UserPage from "./screens/UserPage";
 import Taskbar from './components/Taskbar/Taskbar';
+import TestDropDown from "./screens/TestDropDown";
 
 function App() {
   // forward the user to the github login screen (we pass in the client ID)
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<GithubLoginScreen/>}/>
         {/* <Route path="/profilepage" element={<ProfilePage/>}/> */}
         <Route path="/user/:userId" element={<UserPage />}/>
+        <Route path="/dropdown" element={<TestDropDown />}/>
       </Routes>
     </>
   );

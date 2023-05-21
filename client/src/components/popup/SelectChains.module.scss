@@ -1,0 +1,24 @@
+.clear {
+    background: rgba(0,0,0,0);
+    justify-content: center;
+    border:0;
+}
+
+.options {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .5s ease;
+}
+
+.options:hover {
+    background-color: rgba(41, 41, 52, 0.526);
+}
+
+.optionImage {
+    margin-right:10px;
+}
+
+.dropdown {
+    width:200px;
+}

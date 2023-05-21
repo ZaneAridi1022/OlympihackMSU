@@ -54,7 +54,6 @@ app.get('/getRepos', async function(request, response){
     await fetch("https://api.github.com/users/" + request.query.user + "/repos?per_page=100&type=all", {
         method: "GET",
         headers: {
-            "Authorization" : request.get("Authorization"),
             "Accept": "application/json"
         }
     }).then((res) => {
@@ -70,7 +69,6 @@ app.get('/getCommits', async function(request, response){
     await fetch("https://api.github.com/repos/" + request.query.owner + "/" + request.query.repoName + "/commits?author=" + request.query.user, {
         method: "GET",
         headers: {
-            "Authorization" : request.get("Authorization"),
             "Accept": "application/json"
         }
     }).then((res) => {
