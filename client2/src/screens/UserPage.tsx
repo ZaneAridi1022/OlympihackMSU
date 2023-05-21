@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import React from 'react'
 
 import { getCommitsHelper, loginWithGithub, getUserData, isUserLoggedIn } from "../api/GithubAPI";
@@ -24,92 +25,219 @@ const UserPage = () => {
 
 
 
-    const userInfomation = {
-        "username": "amantham20",
-        "actual_name": "Aman Dhruva Thamminana",
-        "nftpicture": "https://avatars.githubusercontent.com/u/48414198?v=4",
-        "hashtags": ["crypto", "blockchain", "NFTs"],
-        "bio": "Passionate about cryptocurrencies and blockchain technology.",
-        "UserScore": 1200,
+    // const userInfomation = {
+    //     "username": "amantham20",
+    //     "actual_name": "Aman Dhruva Thamminana",
+    //     "nftpicture": "https://avatars.githubusercontent.com/u/48414198?v=4",
+    //     "hashtags": ["crypto", "blockchain", "NFTs"],
+    //     "bio": "Passionate about cryptocurrencies and blockchain technology.",
+    //     "UserScore": 1200,
 
-        "blockchain-contributions": [
-            {
-                "name": "TrustLink1",
-                "description": "A social media platform for blockchain enthusiasts. Here is one 1",
-                "link": ""
-            },
-            {
-                "name": "TrustLink2",
-                "description": "A social media platform for blockchain enthusiasts. Here is one 2",
-                "link": ""
-            },
-            {
-                "name": "TrustLink3",
-                "description": "A social media platform for blockchain enthusiasts. Here is one 3",
-                "link": ""
-            },
-            {
-                "name": "TrustLink4",
-                "description": "A social media platform for blockchain enthusiasts. Here is one 4",
-                "link": ""
+    //     "blockchain-contributions": [
+    //         {
+    //             "name": "TrustLink1",
+    //             "description": "A social media platform for blockchain enthusiasts. Here is one 1",
+    //             "link": ""
+    //         },
+    //         {
+    //             "name": "TrustLink2",
+    //             "description": "A social media platform for blockchain enthusiasts. Here is one 2",
+    //             "link": ""
+    //         },
+    //         {
+    //             "name": "TrustLink3",
+    //             "description": "A social media platform for blockchain enthusiasts. Here is one 3",
+    //             "link": ""
+    //         },
+    //         {
+    //             "name": "TrustLink4",
+    //             "description": "A social media platform for blockchain enthusiasts. Here is one 4",
+    //             "link": ""
 
-            }
-        ],
+    //         }
+    //     ],
 
-        "Github Contributions": [
-            {
-                "RepoName": "projectA",
-                "commit": [
-                    {
-                        "time": "1684605186",
-                        "message": "Initial commit"
-                    },
-                    {
-                        "time": "1684631222",
-                        "message": "Update README"
-                    }
-                ],
-                "stars": 10
-            },
-            {
-                "RepoName": "projectB",
-                "commit": [
-                    {
-                        "time": "1684605186",
-                        "message": "Initial commit"
-                    },
-                    {
-                        "time": "1684631222",
-                        "message": "Fix bug #123"
-                    }
-                ],
-                "stars": 25
-            },
-            {
-                "RepoName": "projectC",
-                "commit": [
-                    {
-                        "time": "1684605186",
-                        "message": "Initial commit"
-                    },
-                    {
-                        "time": "1684631222",
-                        "message": "Add feature X"
-                    },
-                    {
-                        "time": "1684652000",
-                        "message": "Update documentation"
-                    }
-                ],
-                "stars": 5
-            }
-        ]
+    //     "Github Contributions": [
+    //         {
+    //             "RepoName": "projectA",
+    //             "commit": [
+    //                 {
+    //                     "time": "1684605186",
+    //                     "message": "Initial commit"
+    //                 },
+    //                 {
+    //                     "time": "1684631222",
+    //                     "message": "Update README"
+    //                 }
+    //             ],
+    //             "stars": 10
+    //         },
+    //         {
+    //             "RepoName": "projectB",
+    //             "commit": [
+    //                 {
+    //                     "time": "1684605186",
+    //                     "message": "Initial commit"
+    //                 },
+    //                 {
+    //                     "time": "1684631222",
+    //                     "message": "Fix bug #123"
+    //                 }
+    //             ],
+    //             "stars": 25
+    //         },
+    //         {
+    //             "RepoName": "projectC",
+    //             "commit": [
+    //                 {
+    //                     "time": "1684605186",
+    //                     "message": "Initial commit"
+    //                 },
+    //                 {
+    //                     "time": "1684631222",
+    //                     "message": "Add feature X"
+    //                 },
+    //                 {
+    //                     "time": "1684652000",
+    //                     "message": "Update documentation"
+    //                 }
+    //             ],
+    //             "stars": 5
+    //         }
+    //     ]
         
-        }
+    //     }
 
         const { userId } = useParams() as { userId: string };
-
         
+        const [commitData, setCommitData] = useState([{repoName:'',
+                commits:0,
+                stars:0
+            }]);
+
+        const [userInfomation, setUserInfomation] = useState({
+            "username": "",
+            "actual_name": "",
+            "nftpicture": "",
+            "hashtags": [],
+            "bio": "",
+            "UserScore": 0,
+            "Github Contributions": [],
+            "blockchain-contributions": []
+        });
+
+        async function getCommitHistory({user}: {user: string}) {
+            await fetch("http://localhost:4000/getRepos?user="+user, {
+                method: "GET",
+                headers: {
+                    "Authorization" : "Bearer " + localStorage.getItem("accessToken")
+                }
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                console.log(data);
+                //setCommitData(data);
+                var max1 = -1;
+                var max1name = '';
+                var max1owner = '';
+                var max2 = -1;
+                var max2name = '';
+                var max2owner = '';
+                var max3 = -1;
+                var max3name = '';
+                var max3owner = '';
+    
+                data.map((repo: {stargazers_count:0,name:'',owner:{login:''}}) => {
+                    if (repo["stargazers_count"] > max1)
+                    {
+                        max1 = repo["stargazers_count"];
+                        max1name = repo["name"];
+                        max1owner = repo["owner"]["login"];
+                    }
+                    else if (repo["stargazers_count"] > max2)
+                    {
+                        max2 = repo["stargazers_count"];
+                        max2name = repo["name"];
+                        max2owner = repo["owner"]["login"];
+                    }
+                    else if (repo["stargazers_count"] > max3)
+                    {
+                        max3 = repo["stargazers_count"];
+                        max3name = repo["name"];
+                        max3owner = repo["owner"]["login"];
+                    }
+                })
+    
+                Promise.all([
+                                getCommitsHelper({ user: user, owner: max1owner, repoName: max1name }),
+                                getCommitsHelper({ user: user, owner: max2owner, repoName: max2name }),
+                                getCommitsHelper({ user: user, owner: max3owner, repoName: max3name })
+                            ])
+                            .then((commitNums) => {
+                                const [num1, num2, num3] = commitNums;
+                                // setCommitNum1(num1);
+                                // setCommitNum2(num2);
+                                // setCommitNum3(num3);
+                                setCommitData([
+                                {
+                                    repoName: max1name,
+                                    commits: num1,
+                                    stars: max1
+                                },
+                                {
+                                    repoName: max2name,
+                                    commits: num2,
+                                    stars: max2
+                                },
+                                {
+                                    repoName: max3name,
+                                    commits: num3,
+                                    stars: max3
+                                }
+                                ]);
+                                
+                            })
+            })
+            
+        }
+
+        // useEffect(() => {
+
+        // },[commitData]);
+
+        useEffect(() => {
+            getCommitHistory({user: userId});
+            console.log(commitData);
+        }, [userId]);
+        
+
+        async function handleUserData() {
+            const data = await getUserDataGithub();
+            if (!data) {
+                return;
+            }
+            
+            
+            
+
+
+            const userInfomation = {
+                "username": data.login,
+                "actual_name": data.name,
+                "nftpicture": data.avatar_url,
+                "hashtags": ["crypto", "blockchain", "NFTs"],
+                "bio": data.bio,
+                "UserScore": 1200,
+
+            }
+
+            setUserInfomation(userInfomation);
+        }
+        useEffect(() => {
+            handleUserData();
+        }, []);
+
+
     
         const [walletAddress, setWalletAddress] = useState('Loading');
         //const walletAddress = 
@@ -187,7 +315,7 @@ const UserPage = () => {
                 </div>
                 <div className="rightpange">
                     <h1>BlockChain Contribututions</h1>
-                    <div className="post">
+                    {/* <div className="post">
                         {
                             userInfomation["blockchain-contributions"].map((blockchainContribution: any) => {
                                 return (
@@ -206,7 +334,7 @@ const UserPage = () => {
                     </h1>
                     <div className="post">
                         {
-                            userInfomation["Github Contributions"].map((githubContribution: any) => {
+                            userInfomation["Github Contributions"].map((: any) => {
                                 return (
                                     <>
                                         <h2>{githubContribution["RepoName"]}</h2>
@@ -218,7 +346,7 @@ const UserPage = () => {
                             })
                         }
 
-                    </div>
+                    </div> */}
 
                 </div>
             </div>
