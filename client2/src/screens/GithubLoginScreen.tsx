@@ -66,6 +66,8 @@ function GithubLoginScreen() {
         console.log(data);
         setUserData(data);
         setUserDataGithub(data);
+
+        print();
     }
 
     async function getCommitHistory({user}: {user: string}) {

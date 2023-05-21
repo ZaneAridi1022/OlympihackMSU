@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-var */
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ChainBar from '../components/ChainBar/ChainBar';
 import KeplrConnect from '../utils/KeplrConnect';
 
@@ -10,20 +10,16 @@ import { getCommitsHelper, getUserDataGithub } from "../api/GithubAPI";
 import GithubDataDisplay from '../githubdata/GithubDataDisplay';
 
 
+import { AuthContext } from '../utils/AuthContext';
 
 const MyProfileThingy = () => {
-
 
     if (getUserDataGithub() === null) {
         return (
             <>
-                <h1>Not logged in</h1>
             </>
         )
     }
-
-
-
     const [commitData, setCommitData] = useState([{
         repoName: '',
         commits: 0,
@@ -144,7 +140,6 @@ const MyProfileThingy = () => {
     }, []);
 
 
-
     const [walletAddress, setWalletAddress] = useState('Loading');
     //const walletAddress = 
 
@@ -179,6 +174,11 @@ const MyProfileThingy = () => {
     // useEffect(()=>{
     //     GetAddressFromGithub(userInfomation["username"]);
     // }, [])
+
+    //BLOCKCHAIN DATA 
+    const {chainData} = React.useContext(AuthContext);
+
+    console.log("FROM SHIT",chainData);
 
 
     return (
@@ -267,7 +267,11 @@ function PersonalPage() {
 
     const [mintAddress, setMintAddress] = useState('');
     const [githubUser, setGithubUser] = useState(getUserDataGithub().login);
+
     const [walletAddress, setWalletAddress] = useState('');
+    const {chainData} = useContext(AuthContext);
+
+    console.log(chainData);
 
     // function handleChangeGithubUser(e: React.ChangeEvent<any>) {
     //     setGithubUser(e.target.value);
