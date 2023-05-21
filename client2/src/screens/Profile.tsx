@@ -261,6 +261,7 @@ function PersonalPage() {
 }
 
 function ProfilePage() {
+    const { chainData } = React.useContext(AuthContext);
 
     return (
         <div className={styles.container}>
@@ -272,9 +273,20 @@ function ProfilePage() {
                 </div>
 
                 <div className={styles.rowItem + " " + styles.metamask}>
-                    <div className='flex-1 grid gap-6 mb-6 md:grid-cols-1 rounded-xl px-10 py-10 bg-gray-700 mt-10px'>
-                        <h1 className="text-3xl text-white font-bold text-center">Connect MetaMask</h1>
-                        <p className="text-l text-white text-center">After connecting your MetaMask account we can provide you with your blockchain usage statistics!</p>
+                    <div className='flex-1 grid text-white gap-6 mb-6 md:grid-cols-1 rounded-xl px-10 py-10 bg-gray-700 mt-10px'>
+                        <h1 className="text-3xl font-bold text-center">Connect MetaMask</h1>
+                        <p className="text-l text-center">After connecting your MetaMask account we can provide you with your blockchain usage statistics!</p>
+                        {
+                        chainData ? 
+                        <>
+                            <p>Wallet Address: <span className="text-xs font-bold">{chainData.address}</span></p>
+                            <p>Balance: {chainData.balances}</p>
+                            <p>NFTS: {chainData.nfts}</p>
+                        </>
+                        :
+                        <>
+                        </>
+                        }
                         <div className={styles.walletB}>
                             <WalletButton/>
                         </div>

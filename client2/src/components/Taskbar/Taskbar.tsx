@@ -9,6 +9,7 @@ import TaskbarButton from './TaskbarButton';
 
 import { getUserDataGithub } from '../../api/GithubAPI';
 import { Link, useNavigate } from 'react-router-dom';
+import { assertArgument } from 'ethers';
 
 // import TaskbarButton from './TaskbarButton';
 
@@ -87,7 +88,7 @@ function Taskbar() {
           {userData.login !== ''  ?
           <>
             <TaskbarButton label={'About us'} link={''} />
-            <button onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login");}}>
+            <button className="ATAG" onClick={() => { localStorage.removeItem("accessToken"); setUserData({login: '', avatar_url: ''}); localStorage.removeItem("login"); navigate("/");}}>
               Log out
             </button>
 
